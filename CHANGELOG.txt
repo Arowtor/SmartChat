@@ -1,4 +1,8 @@
 SmartChat 0.5.0 Beta 1 - Public Beta Release (based on development line 0.7.41)
+- Added a Settings control for the maximum number of locally stored chat lines (1-10000; default 1000).
+- Clarified that the age limit and stored-line limit are separate from the number of lines replayed at login.
+- Updated the privacy documentation for opt-in local Chat History and Player Journal behavior.
+- Added a limited end-user permission to download, install and run the unmodified AddOn while keeping modification and redistribution rights reserved.
 - Elevated the optional Network Map from a restrained node diagram to a richer animated relationship constellation, while keeping it inside the existing Social Hub window.
 - Added layered connection wires (soft colored glow, bright main stroke and a lighter core) so relationship paths read clearly against the dark canvas.
 - Added capped traveling energy pulses along selected connections, animated accent halos and node sparkles, plus an ambient starfield with staggered shimmer.
