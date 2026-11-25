@@ -35,6 +35,23 @@ local function SmallFont(b)
     end)
 end
 
+local function Help(parent, x, y, text)
+    local b = CreateFrame("Button", nil, parent)
+    b:SetSize(16, 16)
+    b:SetPoint("TOPLEFT", x, y)
+    local fs = b:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    fs:SetPoint("CENTER")
+    fs:SetText("?")
+    fs:SetTextColor(0.4, 0.8, 1)
+    b:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+        GameTooltip:SetText(text, 1, 1, 1, true)
+        GameTooltip:Show()
+    end)
+    b:SetScript("OnLeave", GameTooltip_Hide)
+    return b
+end
+
 local function Trim(s)
     s = (s or ""):gsub("^%s+", "")
     s = s:gsub("%s+$", "")
@@ -165,7 +182,8 @@ local function BuildMenu()
     Label(R.name.f, "Name", 0, -6, "GameFontHighlight")
     menu.nameBox = CreateFrame("EditBox", nil, R.name.f, "InputBoxTemplate")
     menu.nameBox:SetPoint("TOPLEFT", 62, -2)
-    menu.nameBox:SetSize(160, 20)
+    menu.nameBox:SetSize(142, 20)
+    Help(R.name.f, 216, -4, "Rename this tab. The Whisper tab uses its fixed name.")
     menu.nameBox:SetAutoFocus(false)
     menu.nameBox:SetMaxLetters(14)
     local function commitName(self)
@@ -183,13 +201,15 @@ local function BuildMenu()
     menu.swatch = Swatch(R.color.f, 62, -3,
         function() local d = CurrentDef(); return d and d.color or { 1, 1, 1 } end,
         function(c) SC.SetTabLook(menu.colorId or menu.id, nil, c) end)
+    Help(R.color.f, 132, -4, "Choose the color used for this tab and its tab label.")
 
     -- channel (custom channel tabs)
     R.channel = { f = Row(menu) }
     Label(R.channel.f, "Channel", 0, -6, "GameFontHighlight")
     menu.chBox = CreateFrame("EditBox", nil, R.channel.f, "InputBoxTemplate")
     menu.chBox:SetPoint("TOPLEFT", 62, -2)
-    menu.chBox:SetSize(160, 20)
+    menu.chBox:SetSize(142, 20)
+    Help(R.channel.f, 216, -4, "Match this custom tab to the name or number of a chat channel you have joined.")
     menu.chBox:SetAutoFocus(false)
     local function commitChannel(self)
         local txt = Trim(self:GetText())
@@ -205,12 +225,13 @@ local function BuildMenu()
     menu.soundCB = CreateFrame("CheckButton", nil, R.sound.f, "UICheckButtonTemplate")
     menu.soundCB:SetSize(24, 24); menu.soundCB:SetPoint("TOPLEFT", -2, 0)
     Label(R.sound.f, "Sound", 24, -6, "GameFontHighlight")
+    Help(R.sound.f, 216, -4, "Enable or disable notification sounds for this tab.")
     menu.soundCB:SetScript("OnClick", function(self)
         SC.db.sound[SoundKey(menu.id)] = self:GetChecked() and true or false
         SC.RebuildTabs()
     end)
     R.kit = { f = Row(menu) }
-    menu.kitBtn = Btn(R.kit.f, "", 0, -2, 182, function(self)
+    menu.kitBtn = Btn(R.kit.f, "", 0, -2, 168, function(self)
         local k = SoundKey(menu.id)
         local function choose(value)
             SC.db.soundKit[k] = value
@@ -224,7 +245,8 @@ local function BuildMenu()
         end
     end)
     SmallFont(menu.kitBtn)
-    Btn(R.kit.f, "Test", 188, -2, 46, function()
+    Help(R.kit.f, 220, -4, "Choose the notification sound used by this tab. The Test button previews the selected sound.")
+    Btn(R.kit.f, "Test", 174, -2, 42, function()
         local k = SoundKey(menu.id)
         -- Test is an explicit audition: it ignores this tab's notification
         -- toggle, but still respects Master Mute and both volume levels.
@@ -248,7 +270,8 @@ local function BuildMenu()
     menu.volumeSlider:SetThumbTexture("Interface\\Buttons\\UI-SliderBar-Button-Horizontal")
     menu.volumeValue = Label(R.volume.f, "100%", 182, -5, "GameFontHighlightSmall")
     menu.volumeSummary = Label(R.volume.f, "M 100%  |  Out 100%", 76, -23, "GameFontDisableSmall")
-    menu.volumeSummary:SetWidth(158)
+    menu.volumeSummary:SetWidth(136)
+    Help(R.volume.f, 218, -4, "Set this tab's individual volume. Final playback volume is Master Volume multiplied by Tab Volume.")
 
     local function RefreshMenuSoundVolume()
         local key = SoundKey(menu.id)
@@ -284,16 +307,18 @@ local function BuildMenu()
 
     -- display filter
     R.display = { f = Row(menu) }
-    menu.displayBtn = Btn(R.display.f, "", 0, -2, 234, function()
+    menu.displayBtn = Btn(R.display.f, "", 0, -2, 210, function()
         local tab = SC.TabFrame(menu.id)
         if tab then SC.ShowDisplayMenu(tab) end
     end)
+    Help(R.display.f, 216, -4, "Choose which message categories this tab displays. This does not change where your outgoing messages are sent.")
 
     -- reply (Ctrl+click on a name)
     R.reply = { f = Row(menu) }
     menu.replyCB = CreateFrame("CheckButton", nil, R.reply.f, "UICheckButtonTemplate")
     menu.replyCB:SetSize(24, 24); menu.replyCB:SetPoint("TOPLEFT", -2, 0)
     Label(R.reply.f, "Reply: Ctrl+click on a name", 24, -6, "GameFontHighlightSmall")
+    Help(R.reply.f, 216, -4, "When enabled, Ctrl-clicking a player's name opens a reply box in that message's channel with a short quote. This is specific to this tab.")
     menu.replyCB:SetScript("OnClick", function(self)
         SC.db.replyOff[SoundKey(menu.id)] = (not self:GetChecked()) or nil
     end)
@@ -306,8 +331,9 @@ local function BuildMenu()
 
     -- move
     R.move = { f = Row(menu) }
-    Btn(R.move.f, "< Move left", 0, -2, 114, function() SC.MoveTabBy(menu.id, -1) end)
-    Btn(R.move.f, "Move right >", 120, -2, 114, function() SC.MoveTabBy(menu.id, 1) end)
+    Btn(R.move.f, "< Move left", 0, -2, 98, function() SC.MoveTabBy(menu.id, -1) end)
+    Btn(R.move.f, "Move right >", 106, -2, 98, function() SC.MoveTabBy(menu.id, 1) end)
+    Help(R.move.f, 216, -4, "Move this tab one position left or right along the tab bar.")
 
     -- hide + action
     R.actions = { f = Row(menu) }
@@ -319,7 +345,7 @@ local function BuildMenu()
         SC.Print("tab hidden. Bring it back from /sc (Hidden tabs).")
         if SC.RefreshSettings then SC.RefreshSettings() end
     end)
-    menu.actBtn = Btn(R.actions.f, "", 120, -2, 114, function()
+    menu.actBtn = Btn(R.actions.f, "", 106, -2, 98, function()
         local d = CurrentDef()
         local id = menu.id
         menu:Hide()
@@ -327,6 +353,7 @@ local function BuildMenu()
         elseif d then SC.ResetTab(id)
         else SC.CloseDynamicTab(id) end
     end)
+    Help(R.actions.f, 216, -4, "Hide this tab temporarily, or use the second button to reset, remove or close it depending on the tab type.")
 end
 
 function SC.ShowTabMenu(tab)
@@ -399,12 +426,14 @@ local function BuildNew()
     Label(R.name.f, "Name", 0, -6, "GameFontHighlight")
     newMenu.nameBox = CreateFrame("EditBox", nil, R.name.f, "InputBoxTemplate")
     newMenu.nameBox:SetPoint("TOPLEFT", 62, -2)
-    newMenu.nameBox:SetSize(160, 20)
+    newMenu.nameBox:SetSize(142, 20)
+    Help(R.name.f, 216, -4, "Enter the name that will appear on the new tab. You can rename it later from the tab's right-click menu.")
     newMenu.nameBox:SetAutoFocus(false)
     newMenu.nameBox:SetMaxLetters(14)
 
     R.type = { f = Row(newMenu, #SC.CHAT_TYPES * 22 + 18), show = true }
     Label(R.type.f, "Type (where what you type goes)", 0, -2, "GameFontHighlight")
+    Help(R.type.f, 216, -2, "Choose the chat destination used when you type in this tab. A Channel tab targets a channel you have joined.")
     newMenu.radios = {}
     for i, t in ipairs(SC.CHAT_TYPES) do
         local cb = CreateFrame("CheckButton", nil, R.type.f, "UICheckButtonTemplate")
@@ -424,12 +453,14 @@ local function BuildNew()
     Label(R.channel.f, "Channel", 0, -6, "GameFontHighlight")
     newMenu.chBox = CreateFrame("EditBox", nil, R.channel.f, "InputBoxTemplate")
     newMenu.chBox:SetPoint("TOPLEFT", 62, -2)
-    newMenu.chBox:SetSize(160, 20)
+    newMenu.chBox:SetSize(140, 20)
+    Help(R.channel.f, 216, -4, "For a Channel tab, enter the name or number of a channel you have joined with /join.")
     newMenu.chBox:SetAutoFocus(false)
 
     R.color = { f = Row(newMenu), show = true }
     Label(R.color.f, "Color", 0, -6, "GameFontHighlight")
     newMenu.swatch = Swatch(R.color.f, 62, -3, function() return newForm.color end, function(c) newForm.color = c end)
+    Help(R.color.f, 132, -4, "Choose the color used for the new tab.")
 
     R.create = { f = Row(newMenu), show = true }
     newMenu.status = nil
@@ -528,6 +559,7 @@ local function BuildDisplay()
     disp.allCB = CreateFrame("CheckButton", nil, R.all.f, "UICheckButtonTemplate")
     disp.allCB:SetSize(24, 24); disp.allCB:SetPoint("TOPLEFT", -2, 0)
     Label(R.all.f, "Show everything", 24, -6, "GameFontHighlight")
+    Help(R.all.f, 216, -4, "Show every message category in this tab. Turn this off to choose individual categories.")
     disp.allCB:SetScript("OnClick", function(self)
         if self:GetChecked() then SC.SetDisplay(disp.id, nil)
         else SC.SetDisplay(disp.id, { cats = SC.AllCategories() }) end
@@ -537,6 +569,7 @@ local function BuildDisplay()
     -- two columns of categories
     local perCol = math.ceil(#SC.CATEGORIES / 2)
     R.cats = { f = Row(disp, perCol * 22 + 2), show = true }
+    Help(R.cats.f, 216, -2, "Select which message categories appear in this tab. These filters affect display only, not message routing.")
     disp.catCB = {}
     for i, c in ipairs(SC.CATEGORIES) do
         local col, row = math.floor((i - 1) / perCol), (i - 1) % perCol
@@ -560,7 +593,8 @@ local function BuildDisplay()
     Label(R.chan.f, "Only channel", 0, -6, "GameFontHighlight")
     disp.chanBox = CreateFrame("EditBox", nil, R.chan.f, "InputBoxTemplate")
     disp.chanBox:SetPoint("TOPLEFT", 88, -2)
-    disp.chanBox:SetSize(140, 20)
+    disp.chanBox:SetSize(120, 20)
+    Help(R.chan.f, 216, -4, "Limit this tab to a specific joined channel. Leave blank to show all selected channel messages.")
     disp.chanBox:SetAutoFocus(false)
     local function commitChan(self)
         local cfg = DispCfg()
@@ -579,6 +613,7 @@ local function BuildDisplay()
     disp.whoCB:SetSize(24, 24); disp.whoCB:SetPoint("TOPLEFT", -2, 0)
     disp.whoText = R.who.f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     disp.whoText:SetPoint("LEFT", disp.whoCB, "RIGHT", 2, 0)
+    Help(R.who.f, 216, -4, "For a dynamic Whisper tab, show only messages from the conversation currently assigned to it.")
     disp.whoCB:SetScript("OnClick", function(self)
         local cfg, tab = DispCfg(), SC.TabFrame(disp.id)
         if cfg and tab then
@@ -588,20 +623,22 @@ local function BuildDisplay()
     end)
 
     R.presets = { f = Row(disp), show = true }
-    disp.presetBtn = Btn(R.presets.f, "This chat + game messages", 0, -2, 234, function()
+    disp.presetBtn = Btn(R.presets.f, "This chat + game messages", 0, -2, 210, function()
         SC.SetDisplay(disp.id, SC.PresetDisplay(disp.id))
         RefreshDisplay()
     end)
+    Help(R.presets.f, 216, -4, "Apply a preset that includes this tab's chat and game/system messages.")
     R.presets2 = { f = Row(disp), show = true }
-    disp.chatOnlyBtn = Btn(R.presets2.f, "This chat only", 0, -2, 114, function()
+    disp.chatOnlyBtn = Btn(R.presets2.f, "This chat only", 0, -2, 98, function()
         SC.SetDisplay(disp.id, SC.PresetDisplay(disp.id, true))
         RefreshDisplay()
     end)
-    disp.everyBtn = Btn(R.presets2.f, "Everything", 120, -2, 114, function()
+    disp.everyBtn = Btn(R.presets2.f, "Everything", 106, -2, 98, function()
         SC.SetDisplay(disp.id, nil)
         RefreshDisplay()
     end)
 
+    Help(R.presets2.f, 216, -4, "Choose a ready-made preset: only this tab's chat, or everything including game messages.")
     R.hint = { f = Row(disp, 30), show = true }
     local hint = R.hint.f:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
     hint:SetPoint("TOPLEFT", 0, 0)
