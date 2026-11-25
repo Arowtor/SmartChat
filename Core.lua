@@ -1,6 +1,6 @@
 local ADDON, SC = ...
 _G.SmartChat = SC
-SC.version = "0.7.41-network-map-visual-effects"
+SC.version = "0.5.0-beta.1"
 local _, _, _, interfaceVersion = GetBuildInfo()
 SC.isForever = type(interfaceVersion) == "number" and interfaceVersion >= 16000 and interfaceVersion < 17000
 SC.onLogin = {}
