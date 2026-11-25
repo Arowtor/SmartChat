@@ -1,4 +1,4 @@
-SmartChat 0.7.41 - Animated Optional Network Map
+SmartChat 0.5.0 Beta 1 - Public Beta Release
 
 Version 0.7.37 additions
 - Added reusable Group Templates: save a My Group or a multi-selected contact list as a template, create a new My Group from a saved template, update a template from a current group, invite its character members to your Party, or delete the template.
