@@ -37,6 +37,12 @@ Some information depends on fields and APIs exposed by the installed game client
 
 Do not place the repository's outer folder inside `AddOns`; the folder containing `SmartChat.toc` must be named `SmartChat`.
 
+## Local history and privacy
+
+Chat History is disabled by default. When enabled, it stores chat text locally in the game's SavedVariables, including Whisper text. Users control the age limit and maximum number of stored chat lines in Settings; the default is 7 days and 1,000 lines. The separate "Lines to load at login" setting controls how many saved lines are replayed at login, not how many are retained.
+
+The Player Journal is also opt-in and stored locally. It records social events and Whisper interaction metadata; it does not store Whisper message content. Clearing Journal history and clearing Chat History are separate actions.
+
 ## Network Map privacy and performance
 
 Network Map is opt-in and disabled by default. It uses contact and local journal data already available to SmartChat. It does not add a remote network service or a new background polling system. Disabling the map stops its visual effects and clears its rendered objects while preserving source contact and journal data.
