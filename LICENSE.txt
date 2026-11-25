@@ -1,19 +1,32 @@
 Copyright (c) 2026 Arowtor. All rights reserved.
 
-The SmartChat project, including its source code, documentation, visual design,
-and project branding, is protected by applicable copyright laws.
+SmartChat, including its source code, original assets, documentation, visual
+design, and project branding, is protected by applicable copyright laws.
 
-NO LICENSE IS GRANTED.
+LIMITED END-USER PERMISSION
 
-Except for the limited rights necessary to view, display, and fork this public
-repository as permitted by the GitHub Terms of Service, no person or entity is
-granted permission to use, reproduce, modify, adapt, publish, distribute,
-sublicense, sell, or create derivative works from any part of this project
-without prior written permission from the copyright holder.
+The copyright holder grants each individual end user a limited, non-exclusive,
+non-transferable permission to download, install, and run an unmodified copy of
+SmartChat solely for personal gameplay with World of Warcraft: Forever. This
+permission includes the local copies technically necessary to install and run
+the AddOn, and downloading or updating it through the official SmartChat
+project pages on CurseForge or GitHub.
+
+NO OTHER RIGHTS ARE GRANTED.
+
+You may not modify, adapt, translate, alter, reverse engineer for the purpose
+of creating a competing or modified version, or create derivative works from
+the AddOn. You may not repackage, mirror, re-host, redistribute, sublicense,
+sell, rent, or commercially exploit the AddOn or any part of its source code
+or original assets. You may not remove or alter copyright notices, attribution,
+or project branding.
+
+The source may be viewed in the public repository. Public visibility does not
+grant permission to modify or redistribute modified copies.
 
 This notice does not supersede the terms of any third-party component or asset
-that may be identified in THIRD-PARTY-NOTICES.md or ASSET-CREDITS.md. Such
-components remain governed by their own respective licenses or permissions.
+identified in THIRD-PARTY-NOTICES.md or ASSET-CREDITS.md. Such components
+remain governed by their own respective licenses or permissions.
 
 THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
