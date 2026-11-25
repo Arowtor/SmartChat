@@ -757,7 +757,7 @@ end
 Build = function()
     local db = SC.db
     panel = CreateFrame("Frame", "SmartChatSettings", UIParent, "BackdropTemplate")
-    panel:SetSize(700, 660)
+    panel:SetSize(700, 700)
     panel:SetPoint("CENTER")
     panel:SetFrameStrata("DIALOG")
     panel:SetMovable(true)
