@@ -803,7 +803,6 @@ Build = function()
     Label(panel, "Display", 20, y)
     y = y - 24
     local cb, lab = CB(panel, "Timestamps", 20, y, function() return db.timestamps end, function(v) db.timestamps = v end)
-    Help(panel, lab, "Show or hide timestamps before messages in SmartChat tabs. The adjacent button changes the displayed time format.")
     local fmtBtn = Cycle(panel, 118, y, 206, function()
         for _, f in ipairs(TIME_FORMATS) do
             if f.fmt == db.timeFormat then return f.name .. "  " .. date(f.fmt) end
@@ -814,7 +813,7 @@ Build = function()
         for i, f in ipairs(TIME_FORMATS) do if f.fmt == db.timeFormat then idx = i end end
         db.timeFormat = TIME_FORMATS[idx % #TIME_FORMATS + 1].fmt
     end)
-    Help(panel, fmtBtn, "Click the button to switch the time format.\n\n24-hour = 14:23\n12-hour = 02:23 PM\n\nThe time shown on the button is the current time.")
+    Help(panel, fmtBtn, "The Timestamps checkbox shows or hides time labels before messages. Click this button to switch the time format.\n\n24-hour = 14:23\n12-hour = 02:23 PM\n\nThe time shown on the button is the current time.")
     y = y - 26
     local gbtn = Cycle(panel, 24, y, 296, function()
         local on = GameStampOn()
