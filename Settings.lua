@@ -320,6 +320,7 @@ local function BuildSoundPanel()
         RefreshSoundRowValues()
     end)
     SmallFont(muteButton)
+    Help(soundPanel, muteButton, "Mute All immediately silences SmartChat notifications and sound previews. It does not reset Master Volume or per-tab volume choices.")
     masterSlider:SetScript("OnValueChanged", function(self, value)
         if self.refreshing then return end
         db.soundMasterVolume = math.max(0, math.min(1, value))
@@ -365,6 +366,7 @@ local function BuildSoundPanel()
         local y = -((i - 1) * 36)
         local row = {}
         row.name = Label(content, def.label or id, 2, y - 4, "GameFontHighlight")
+        Help(content, row.name, "Settings for the " .. (def.label or id) .. " tab: turn its notification sound on or off, choose its sound, adjust its individual volume, and use Test to preview it. The displayed final volume also includes Master Volume.")
 
         row.enabled = CreateFrame("CheckButton", nil, content, "UICheckButtonTemplate")
         row.enabled:SetSize(22, 22)
@@ -801,6 +803,7 @@ Build = function()
     Label(panel, "Display", 20, y)
     y = y - 24
     local cb, lab = CB(panel, "Timestamps", 20, y, function() return db.timestamps end, function(v) db.timestamps = v end)
+    Help(panel, lab, "Show or hide timestamps before messages in SmartChat tabs. The adjacent button changes the displayed time format.")
     local fmtBtn = Cycle(panel, 118, y, 206, function()
         for _, f in ipairs(TIME_FORMATS) do
             if f.fmt == db.timeFormat then return f.name .. "  " .. date(f.fmt) end
@@ -890,7 +893,9 @@ Build = function()
     title = Label(panel, "History", 20, y)
     Help(panel, title, "Saves chat lines on your computer and shows the latest ones when you log in. Whisper text is saved too. Lines are not saved during boss encounters.")
     y = y - 24
-    CB(panel, "Save chat between sessions", 20, y, function() return db.historyEnabled end, function(v) db.historyEnabled = v end); y = y - 28
+    cb, lab = CB(panel, "Save chat between sessions", 20, y, function() return db.historyEnabled end, function(v) db.historyEnabled = v end)
+    Help(panel, lab, "When enabled, chat lines including Whisper text are saved locally in the game's SavedVariables so recent messages can be shown after you log in. This is OFF by default.")
+    y = y - 28
     lab = Label(panel, "Keep days (0 = no age limit):", 28, y - 3, "GameFontHighlightSmall")
     Help(panel, lab, "Age limit for locally stored chat lines. Set to 0 to disable age-based cleanup; the maximum stored lines setting still applies.")
     NumBox(panel, 190, y, function() return db.historyDays end, function(v) db.historyDays = math.max(0, math.floor(v)); SC.PruneHistory() end)
@@ -902,15 +907,17 @@ Build = function()
     lab = Label(panel, "Lines to load at login:", 28, y - 3, "GameFontHighlightSmall")
     Help(panel, lab, "How many of the most recent saved lines to display when you log in. This does not change the maximum number stored.")
     NumBox(panel, 190, y, function() return db.historyLoad end, function(v) db.historyLoad = math.max(0, math.floor(v)) end); y = y - 28
-    Btn(panel, "Clear history", 24, y, 130, function() SC.ClearHistory(); SC.Print("history cleared") end)
+    local clearHistoryButton = Btn(panel, "Clear history", 24, y, 130, function() SC.ClearHistory(); SC.Print("history cleared") end)
+    Help(panel, clearHistoryButton, "Permanently clears the locally saved Chat History entries. This does not clear Player Journal events, notes, Favorites or contact groups.")
     y = y - 38
 
     title = Label(panel, "Word filter", 20, y)
     Help(panel, title, "Messages that contain one of these words are hidden. Separate words with commas, upper/lower case does not matter. Press Enter to save.")
     y = y - 24
     WordBox(panel, 26, y, 290, function() return db.filterWords end, function(l) db.filterWords = l end); y = y - 26
-    CB(panel, "Mask with *** instead of hiding", 20, y, function() return db.filterMask end, function(v) db.filterMask = v end)
-
+    cb, lab = CB(panel, "Mask with *** instead of hiding", 20, y, function() return db.filterMask end, function(v) db.filterMask = v end)
+    Help(panel, lab, "When a message matches a filtered word, replace the word with asterisks instead of hiding the entire message.")
+    
     ------------------------------------------------ right column
     y = -80
     title = Label(panel, "Reorder tabs", R, y)
@@ -925,31 +932,39 @@ Build = function()
     title = Label(panel, "Opacity", R, y)
     Help(panel, title, "Make windows see-through.\n\nSmartChat windows: this settings window, tab menus and the copy window.\nTab bar: the dark strip behind the tabs.\nChat background: the game's own chat window background (same as Esc > Options > Social > Chat > Background Opacity).")
     y = y - 26
-    Slider(panel, "SmartChat windows", R + 8, y, 0.2, 1, function() return db.windowAlpha end,
+    local _, windowOpacityLabel = Slider(panel, "SmartChat windows", R + 8, y, 0.2, 1, function() return db.windowAlpha end,
         function(v) db.windowAlpha = v; SC.ApplyWindowAlpha() end)
+    Help(panel, windowOpacityLabel, "Adjust transparency of SmartChat windows such as Settings, tab menus and the copy dialog.")
     y = y - 28
-    Slider(panel, "Tab bar", R + 8, y, 0, 1, function() return db.barAlpha end,
+    local _, tabOpacityLabel = Slider(panel, "Tab bar", R + 8, y, 0, 1, function() return db.barAlpha end,
         function(v) db.barAlpha = v; SC.ApplyBarAlpha() end)
+    Help(panel, tabOpacityLabel, "Adjust transparency of the background strip behind the chat tabs.")
     y = y - 28
-    Slider(panel, "Chat background", R + 8, y, 0, 1,
+    local _, chatOpacityLabel = Slider(panel, "Chat background", R + 8, y, 0, 1,
         function() return db.chatAlpha or (DEFAULT_CHAT_FRAME and DEFAULT_CHAT_FRAME.oldAlpha) or 0.25 end,
         function(v) SC.ApplyChatAlpha(v) end)
+    Help(panel, chatOpacityLabel, "Adjust transparency of the game's chat frame background. This changes the game's chat background opacity setting.")
     y = y - 40
 
     title = Label(panel, "Alerts", R, y)
     Help(panel, title, "The tab flashes and the alert sound plays when a message contains your character name or one of your extra words. Alerts work even if that tab's sound is off. Not active during boss encounters.")
     y = y - 24
-    CB(panel, "When someone writes my character name", R, y, function() return db.alertOwnName end, function(v) db.alertOwnName = v end); y = y - 26
+    cb, lab = CB(panel, "When someone writes my character name", R, y, function() return db.alertOwnName end, function(v) db.alertOwnName = v end)
+    Help(panel, lab, "Flash the matching tab and play the alert sound when a chat message contains your current character name. Alerts are disabled during boss encounters.")
+    y = y - 26
     lab = Label(panel, "Extra words:", R + 8, y, "GameFontHighlightSmall")
     Help(panel, lab, "Separate words with commas, upper/lower case does not matter. Example: raid, invite, mythic. Press Enter to save.")
     y = y - 18
     WordBox(panel, R + 12, y, 300, function() return db.alertWords end, function(l) db.alertWords = l end); y = y - 28
-    Label(panel, "Alert sound:", R + 8, y - 5, "GameFontHighlightSmall")
-    Cycle(panel, R + 80, y, 190, function() return db.alertSound or "NONE" end, function()
+    local alertSoundLabel = Label(panel, "Alert sound:", R + 8, y - 5, "GameFontHighlightSmall")
+    Help(panel, alertSoundLabel, "Choose which sound plays when an alert is triggered. Select NONE to disable the alert sound while keeping visual tab flashes.")
+    local alertSoundButton = Cycle(panel, R + 80, y, 190, function() return db.alertSound or "NONE" end, function()
         db.alertSound = NextSound(db.alertSound)
         SC.PlayKit(db.alertSound)
     end)
-    Btn(panel, "Test", R + 275, y, 50, function() SC.PlayKit(db.alertSound) end)
+    Help(panel, alertSoundButton, "Click to cycle through the available alert sounds.")
+    local alertTestButton = Btn(panel, "Test", R + 275, y, 50, function() SC.PlayKit(db.alertSound) end)
+    Help(panel, alertTestButton, "Play the currently selected alert sound once as a preview.")
     y = y - 42
 
     title = Label(panel, "Keyboard shortcuts", R, y)
