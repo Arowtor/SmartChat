@@ -10,7 +10,7 @@ SmartChat combines a customizable tabbed chat interface with an integrated Socia
 
 - **Game:** World of Warcraft: Forever / Camelot
 - **Interface:** 16001
-- **Current source package:** 0.7.41 — Animated Optional Network Map
+- **Current public beta:** 0.5.0-beta.1 (based on development line 0.7.41)
 
 This package targets WoW: Forever. Do not assume compatibility with Retail or other Classic clients unless a release explicitly says so.
 
@@ -43,7 +43,7 @@ Network Map is opt-in and disabled by default. It uses contact and local journal
 
 ## Project status
 
-Version 0.7.41 has passed static source/package checks, but the complete release still requires verification in the live WoW: Forever client. In-game rendering, actual audio playback, client API behavior, and frame-time impact must be tested on the target client.
+Version 0.5.0-beta.1 is a public beta build based on development line 0.7.41. It has passed static source/package checks, but the complete release still requires verification in the live WoW: Forever client. In-game rendering, actual audio playback, client API behavior, and frame-time impact must be tested on the target client.
 
 ## Copyright and permissions
 
