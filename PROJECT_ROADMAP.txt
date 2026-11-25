@@ -1,0 +1,227 @@
+SMARTCHAT MASTER ROADMAP
+WoW: Forever / Camelot - Interface 16001
+
+PURPOSE
+This document is the persistent project plan and request register for SmartChat.
+It records what has been requested, what is already implemented, and the order in
+which remaining work must be completed. It is included with every release so the
+project direction is not lost between development sessions.
+
+EXECUTION RULES
+1. Work through unresolved requests in chronological order, oldest first.
+2. Every new user request or accepted feature proposal is appended at the very
+   bottom of the APPENDED REQUEST REGISTER. Do not move a newer request ahead of
+   an older unresolved request unless the user explicitly changes priority.
+3. Keep completed entries and their release references. Do not silently remove
+   requirements when a newer feature is added.
+4. Assistant suggestions enter the plan only after the user accepts them.
+5. Preserve existing chat behavior and settings unless a request explicitly
+   changes them. Do not recreate features that already exist.
+6. Keep AddOn UI text, tooltips, README, changelog and this document in English.
+7. Report client-only testing honestly. Static or mocked tests are not live-game
+   verification.
+
+PROJECT SCOPE
+A. Main chat: tabs, Global, routing/isolation, Whisper, filters, name badges and
+   colors, copy/reply, links, shortcuts, sounds, and display customization.
+B. Social Hub: Friends, Guild, Battle.net context, contact search and filters,
+   personal groups, templates, contextual actions, profiles, notifications,
+   local social records, and an optional in-window Network Map. Network Map is
+   OFF by default and builds a visual snapshot only after explicit activation.
+C. Player Journal / History: optional, local, bounded and event-driven. It must
+   not store Whisper message text by default or generate unsupported claims.
+D. My Groups and explicit Party invitations are in scope. A dedicated Raid
+   Manager / Raid Frame replacement is explicitly out of scope; the game already
+   provides raid-management tools. SmartChat must not duplicate them.
+E. Portable backup is manual copy/paste because WoW AddOns cannot freely write
+   arbitrary files or access the operating-system clipboard. Normal SavedVariables
+   persistence and local restore points do not require daily copy/paste.
+
+CHRONOLOGICAL IMPLEMENTATION RECORD
+
+0.7.4 - Chat tabs and tab-bar interaction
+- Custom chat tabs, tab appearance controls and constrained drag/reordering.
+
+0.7.5 - Global chat view
+- Aggregate read-only Global view, independent unread state and sound routing.
+- Global does not change the actual outgoing chat destination.
+
+0.7.6 - Keyboard shortcuts
+- Shortcut editor, conflict detection and confirmation before replacing bindings.
+
+0.7.7 - Relationship name colors
+- Friend, Battle.net, Guild and Group name-color logic and combined relationships.
+
+0.7.8 - Strict tab isolation
+- Per-tab display filters and migration of old generated filter defaults.
+
+0.7.9 to 0.7.12 - Sound system
+- Ten original notification sounds, each with ten pre-rendered 10%-100% variants.
+- Per-tab sound choice and volume, Master Volume, Mute All, Test and optional
+  rate-limited Live Preview. Right-click tab volume controls share the same values.
+
+0.7.13 to 0.7.18 - Whisper and contact presentation
+- One main Whisper tab with a compact vertical contact list on the left and the
+  selected conversation in the normal chat area on the right.
+- Contact relationship badges, name colors, presence, Class and Level when known.
+- Independent Social Hub icon and panel; Whisper contacts are accessible there too.
+
+0.7.19 to 0.7.20 - Social Hub foundation
+- Unified contacts, Friends/Guild/Group/Whispers/Battle.net views, search, filters,
+  Favorites, Pins, contact actions, Guild roster context and Battle.net context.
+- Optional local Player Journal foundation.
+
+0.7.21 - Web link handling
+- Detect website and Discord addresses and open a safe copy dialog. Native WoW
+  item, spell, quest and player hyperlinks retain their original behavior.
+
+0.7.22 to 0.7.34 - Social history and Player Journal
+- Event-driven social activity and optional local notifications.
+- Player Profiles, quick notes/tags, Timeline, shared group history, attendance,
+  relationship context, insights, local backup/restore and privacy controls.
+- The History / Player Journal feature pass was finalized in 0.7.34. It remains
+  available and maintained, but should not be expanded repeatedly unless a real
+  defect or newly accepted requirement needs it.
+
+0.7.35 - Friends Manager
+- Multi-select and bulk local Favorites, Pins and personal-group actions.
+
+0.7.36 - Guild Manager and Analytics
+- Overview, Roster, Level & Class, Rank & Achievements, Activity and Analytics.
+- Clickable statistical drill-downs into the roster.
+
+0.7.37 - My Groups and Party Companion
+- Personal contact groups, reusable Group Templates, create/update/copy/delete
+  template actions, backup support and user-confirmed invitations to a normal
+  in-game Party. No dedicated Raid Manager was added.
+
+0.7.38 - Chat Text Appearance
+- Added adjustable chat message font size (8-24) and built-in font family choices.
+- Optionally apply the selected font and size to the chat input box.
+- Added a preview and Reset to Blizzard Default control.
+- Font appearance applies across SmartChat chat tabs. It does not change message
+  text colors, channel colors, name colors, Social Hub labels or other game UI fonts.
+
+0.7.39 - Settings Window Layering and Extended Chat Typography
+- Added a shared top-level window raise helper. Independent settings pages use FULLSCREEN_DIALOG and receive a fresh frame level when opened, so Sound & Notifications, Chat Text Appearance, Social & Journal Settings, Backup/Restore and the Keyboard Shortcut editor appear above the main Settings window.
+- Restored the main Settings window to the foreground when returning from Sound and Text settings; child windows keep their own Back/Close behavior.
+- Expanded chat message font size from 8-24 to 8-48 in both the Settings slider and runtime clamp. Existing saved values remain supported and values above 48 are safely clamped.
+- Enlarged and wrapped the font preview to accommodate large sizes. When matching the typing-box font is enabled, its height grows only as needed (up to 64 px); disabling the option or resetting restores the captured original font and height.
+- Message text colors, channel colors, relationship name colors, Social Hub fonts and other game UI fonts remain unchanged.
+- Syntax-checked all Lua files and ran mocked frame-layering and font-control checks. Not tested inside the live WoW: Forever client.
+
+
+0.7.40 - Optional Social Hub Network Map
+- Added Network as a category inside the existing Social Hub window; no separate
+  window is created.
+- Network Map is OFF by default. Until the user explicitly enables it, only the
+  page's lightweight enable/description controls exist; no graph canvas, contact
+  nodes or connection lines are created.
+- On enable/Refresh, builds a bounded visual snapshot from existing Friends,
+  Guild, current Group, Battle.net, Whisper, Favorites, My Groups and recorded
+  Group Journal data. It does not create a new tracker or background poller.
+- Added Node Graph, Radial and Mind Map layouts; Midnight, Neon and Minimal themes;
+  80/100/120 percent zoom; drag-to-pan; wheel/Shift-wheel scrolling; relationship
+  filters; maximum visible-node limits; and contact Profile/Whisper actions.
+- Added curved connector polylines, colored relationship hubs, contact status,
+  relationship badges, Class/Level metadata, tooltips and one-time staggered
+  entrance fades. This initial presentation was intentionally lightweight; the
+  richer animated visual treatment was added in 0.7.41.
+- Disable stops animations, hides the canvas and clears rendered node/edge content.
+  Source contacts, SavedVariables, My Groups and Player Journal remain untouched.
+- The map only represents relationships exposed by the game or already recorded
+  locally. It does not infer mutual Friends, hidden characters, Dungeon completion
+  or exact simultaneous group attendance.
+- Syntax-checked all 11 Lua files and checked default-off/lazy-build, bounded-node,
+  disable-cleanup and documentation conditions. Not tested in the live client.
+
+0.7.41 - Network Map Visual Effects Upgrade
+- Upgraded Network Map inside the existing Social Hub from a restrained diagram
+  to an intentionally rich animated relationship constellation.
+- Added layered glowing connector paths, capped traveling energy pulses, animated
+  node halos and sparkles, a subtle grid/starfield and staggered node entrance fades.
+- Enhanced Midnight and Neon visual themes; retained Minimal as an optional quiet
+  theme. The Animation switch governs the complete motion package.
+- Reduce Motion stops looping shimmer, traveling pulses and entrance transitions
+  without disabling map navigation, selection or contact actions.
+- Kept strict opt-in behavior: Network Map remains OFF by default. No canvas,
+  graph node/edge pools, starfield or animation groups are created until the user
+  explicitly enables the map. The first snapshot is built on demand.
+- Disable stops every map animation, hides the canvas and clears rendered visual
+  pools while preserving Friends, Guild, Whisper, My Groups and Journal data.
+  Leaving the page stops effects; returning rebuilds/replays only when enabled.
+- No new tracking, polling, external network calls or idle update loops were added.
+  The only OnUpdate remains attached to active drag-to-pan input.
+- Syntax-checked all Lua files and ran static checks for lazy creation, motion
+  gating, cleanup and bounded visual pools. Not tested in the live client.
+
+CURRENT STATUS
+- Sound Pack, Master/Tab Volume, Mute All and sound preview already exist.
+- Global view and strict per-tab display isolation already exist.
+- Keyboard shortcut editor and tab management already exist.
+- Link handler and copy/reply functionality already exist.
+- Social Hub has Friends, Guild, Battle.net, My Groups, templates, contact filters,
+  contextual actions, profiles, notifications and analytics foundations.
+- Player Journal/History is feature-complete for the currently agreed scope; live
+  client verification and bug fixes remain possible.
+- Chat Text Appearance was implemented in 0.7.38; the size range was expanded to 8-48 in 0.7.39.
+- Settings child-window stacking was fixed in 0.7.39 for Sound, Text Appearance, Social & Journal, Backup/Restore and Keyboard Shortcuts.
+- Optional Network Map was introduced in 0.7.40 and visually upgraded in 0.7.41 inside the existing Social Hub. It defaults OFF, builds only after explicit activation/Refresh, has no independent tracker or polling, and includes three layouts, three themes, pan/zoom, layered glow paths, traveling pulses and ambient/node effects.
+
+REMAINING VALIDATION (NOT A FEATURE REQUEST)
+- Test each release inside the actual WoW: Forever client, especially real Friend,
+  Guild, Battle.net and Party API behavior, link clicks, font selection up to 48, settings subwindow stacking, sounds, and Network Map canvas/layout/pan/zoom/animations.
+- When the user reports a defect, append it to the request register and fix it in
+  chronological order. Do not mark a runtime behavior verified based only on mocks.
+
+APPENDED REQUEST REGISTER
+New requests must always be appended below this line, in date order. They remain
+in this register after implementation, with their release/status updated inline.
+
+[2026-11-24] User request: allow changing chat text size and font family. Provide
+built-in font choices, an adjustable size, optional matching font for the typing
+box, a preview and a reset to the game's default font. Keep message/channel/name
+colors unchanged and make the controls easy to find in Settings.
+Status: IMPLEMENTED in 0.7.38. Live-client verification still required.
+
+
+[2026-11-25] User-reported UI issue: secondary windows opened from the main Settings window
+(including Sound & Notifications and other settings panels) can appear behind the
+main Settings window. Fix window stacking/focus consistently: child/secondary
+panels must appear above the Settings window, with reliable Back/Close behavior
+and correct restoration of the parent window.
+Status: IMPLEMENTED in 0.7.39. Child windows use FULLSCREEN_DIALOG, top-level focus and a fresh frame level on open; Back/Close returns to the main Settings window. Live-client verification still required.
+
+[2026-11-25] User request: allow chat font sizes larger than the current maximum of
+24. Review the safe upper limit and extend the size control (candidate range 8-36
+or 8-48) while checking message wrapping, chat frame layout and input-box sizing.
+Keep the current font-family choices, preview, reset behavior and color settings.
+Status: IMPLEMENTED in 0.7.39 with an 8-48 range, a larger wrapped preview and optional typing-box height adjustment/restoration. Live-client verification still required.
+
+[2026-11-25] User request: add an optional, visually polished node-based Network Map
+resembling Nuke/Fusion node graphs and mind maps. It must remain inside the existing
+Social Hub window (never a separate window), be OFF by default, and do no graph
+construction/rendering/animation until explicitly enabled from the Network page.
+It should read the relationship data already available in the other Social Hub
+sections without starting a separate tracker, polling loop or network activity.
+Provide Node Graph, Radial and Mind Map layouts, visual themes, optional entrance
+animations and Reduce Motion, bounded nodes, pan/zoom, selectable contacts and
+profile/Whisper actions. Disabling the map must stop/hide/clear visual content while
+preserving source contacts and Journal data.
+Status: IMPLEMENTED in 0.7.40. It is in the existing Social Hub window, defaults OFF,
+creates its canvas only after explicit activation, reads existing sources on demand,
+and has no separate tracking or polling. Live-client visual/performance verification
+is still required.
+
+
+
+[2026-11-25] User clarification: Network Map must be a visually rich, polished and
+animated showcase, not a simple/static node diagram. The desired presentation includes
+strong visual effects and animation. It must remain strictly opt-in: OFF by default,
+and no graph canvas, nodes, connections, decorations or animations should be created
+until the user explicitly activates it. Disabling it must stop its effects and clear
+rendered map content while preserving the underlying Social Hub data.
+Status: VISUAL UPGRADE IMPLEMENTED in 0.7.41 with layered glow connections, capped
+traveling pulses, animated node halos/sparkles, ambient starfield and staggered node
+entrance effects. Default-off/lazy initialization retained. Live-client visual and
+performance verification still required.

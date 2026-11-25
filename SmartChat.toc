@@ -1,0 +1,19 @@
+## Interface: 16001
+## Interface-Camelot: 16001
+## Title: SmartChat
+## Notes: Tabbed chat, Social Hub, unified Whisper conversations, notifications and local player history for WoW: Forever.
+## Version: 0.7.41
+## SavedVariables: SmartChatDB
+## IconTexture: Interface\Icons\INV_Misc_Note_01
+
+Core.lua
+Chat.lua
+Links.lua
+View.lua
+Reply.lua
+Tabs.lua
+SocialJournal.lua
+GroupTools.lua
+Settings.lua
+TabMenu.lua
+Bindings.lua

@@ -1,0 +1,423 @@
+SmartChat 0.7.41 - Network Map Visual Effects Upgrade
+- Elevated the optional Network Map from a restrained node diagram to a richer animated relationship constellation, while keeping it inside the existing Social Hub window.
+- Added layered connection wires (soft colored glow, bright main stroke and a lighter core) so relationship paths read clearly against the dark canvas.
+- Added capped traveling energy pulses along selected connections, animated accent halos and node sparkles, plus an ambient starfield with staggered shimmer.
+- Improved Midnight and Neon themes with deeper backgrounds, brighter cyan/violet accents and a subtle grid; Minimal remains available as the quieter alternative.
+- Expanded node entrance fades to a slower staggered reveal. The Animation control now governs the visual motion package rather than only the entry fade.
+- Reduce Motion suppresses looping shimmer, traveling pulses and entrance transitions while leaving the map and its controls fully usable.
+- Preserved the strict opt-in design: Network Map remains OFF by default. Before the user presses Enable Network Map, no canvas, node/edge pools, ambient decorations or map animation groups are created. The first snapshot and effects are built only after explicit activation or a manual refresh while enabled.
+- Disable stops node, halo, sparkle and connection-pulse animations, hides the canvas and clears rendered pools. Navigating away stops effects; returning to the Network page rebuilds the current on-demand snapshot and restarts effects only if enabled.
+- Preserved all source contact and Player Journal data. No new tracker, polling loop, network request or idle OnUpdate loop was added; OnUpdate remains limited to an active user drag-pan.
+- Syntax-checked all Lua files and ran static checks for default-off/lazy creation, animation gating, cleanup and bounded pools. Not tested inside the live WoW: Forever client; actual texture availability, animation playback, frame cost and layout need in-game verification.
+
+SmartChat 0.7.40 - Optional Social Hub Network Map
+- Added a Network category inside the existing Social Hub window. It does not create a second window or replace List, Friends, Guild, My Groups, Player Profiles or the main chat.
+- Network Map is opt-in and OFF by default. Before explicit activation, the page shows only its enable/description controls; the graph canvas, contact-node pool and connection-line pool are not created.
+- On activation or manual Refresh, builds a bounded snapshot from existing Friends, Guild, current Group, Battle.net, Whisper, Favorites, My Groups and locally recorded Group Journal data. It adds no new event tracking, polling, timers or network requests.
+- Added three layouts (Node Graph, Radial and Mind Map), three themes (Midnight, Neon and Minimal), 80/100/120 percent zoom, drag-to-pan, vertical and Shift+wheel horizontal scrolling, relationship filters and a maximum visible-node control.
+- Added curved connector polylines, colored relationship hubs, contact status dots, relationship badges, Class/Level metadata, tooltips, selected-node highlighting, profile/Whisper actions and optional one-time staggered node entrance fades. Reduce Motion suppresses entrance effects; there are no looping animations.
+- Disabling the map stops active animations, hides the canvas and clears rendered node/edge content. All Friends, Guild, Whisper, My Groups, Player Journal and other source data remain untouched.
+- The map does not infer mutual Friends, hidden Battle.net characters, exact group-time overlap or Dungeon completion. Unknown data remains unknown; recorded partners depend on Journal history captured while tracking was enabled.
+- Added the optional Network Map request and implementation status to PROJECT_ROADMAP.txt. Preserved all previous chat, sound, shortcut, font, link, Social Hub and Journal features.
+- Syntax-checked all Lua files and ran static/source checks for default-off behavior, lazy canvas creation, bounded node counts, layout controls and disable cleanup. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.39 - Settings Window Layering and Extended Chat Typography
+- Added a shared top-level window-raise helper. Independent settings pages now use FULLSCREEN_DIALOG and receive a fresh frame level when opened, so Sound & Notifications, Chat Text Appearance, Social & Journal Settings, Backup/Restore and the Keyboard Shortcut editor appear above the main Settings window.
+- Restored the main Settings window to the foreground when returning from Sound and Text settings; child windows keep their own Close/Back behavior.
+- Expanded chat message font size from 8-24 to 8-48 in the settings slider and runtime clamp. Existing saved font sizes remain valid and values above 48 are safely clamped.
+- Enlarged the typography preview area and enabled wrapping so large font samples remain readable.
+- When the optional matching input font is enabled, the chat edit box height is increased as needed (up to 64 px) to reduce clipping; disabling the option or resetting restores the captured original input font and height.
+- Message text colors, channel colors, relationship name colors, Social Hub fonts and other game UI fonts are unchanged.
+- Updated PROJECT_ROADMAP.txt and the chronological request register with both user requests and their release status.
+- Syntax-checked all Lua files and ran mocked frame/font checks. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.38 - Chat Text Appearance and Master Roadmap
+- Added a Chat Text Appearance page accessible from the main Settings window.
+- Added built-in font family choices: Blizzard Default, Friz Quadrata, Arial Narrow, Morpheus and Skurri.
+- Added an adjustable chat message font size from 8 to 24, a sample preview and Reset to Blizzard Default.
+- Added an optional setting to apply the selected family and size to the chat input box; when disabled, the input box restores its captured game font.
+- Font changes apply to the main chat message frame across SmartChat tabs. They do not change message/channel/name colors, Social Hub typography or other game UI fonts.
+- Added PROJECT_ROADMAP.txt as the persistent chronological request register. New user requests are appended at the bottom and unresolved work is executed oldest-first.
+- Audited existing Global/tab isolation, sound pack, Master/Tab Volume, Mute All, shortcut editor, tab management and copy/link functions; these were already present and were not redundantly rebuilt.
+- Syntax-checked all Lua files and tested font apply/reset/input behavior with mocked chat frames. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.37 - My Groups, Group Templates and Party Companion
+- Added reusable Group Templates. Save a private My Group or a multi-selected contact list as a local template snapshot; create a new My Group from it; update it from a source group; or delete it.
+- Added a Group Templates manager accessible from the Groups category. It shows the saved template roster and available actions without creating a separate Raid/Party management system.
+- Added confirmed invitations for available character contacts in a My Group, a saved template or a multi-selection. SmartChat checks current group membership, normal Party capacity, account-only contacts and known Offline status; it leaves Raid invitations to the game's own tools.
+- Routed the individual Invite to Party contact action through the shared invite helper. Calls are made only after a user-initiated action; failures are reported rather than silently treated as success.
+- Added Group Template records and members to portable backup export, validation and merge import. Existing 0.7.x backups without template records remain supported. Template imports merge with local templates rather than replacing them.
+- Templates are snapshots of local contact names. They do not mirror future changes to source groups unless the user chooses Update, and they do not modify in-game Friends, Guild, Party or Raid membership.
+- No new polling loops, permanent timers, external network requests, or Journal event tracking were added.
+- Syntax and mocked-data tests cover template create/copy/update/delete, selected-contact snapshots, backup preview/export/import round trips, duplicate handling, offline/account-only filtering, already-grouped detection and five-player Party capacity. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.36 - Guild Manager and Guild Analytics
+- Added a six-section Guild Manager inside Social Hub: Overview, Roster, Level & Class, Rank & Achievements, Activity and Analytics.
+- Added local Guild roster summaries for current membership, Online/Offline/AFK/DND/Unknown presence, average/median/highest observed level, level bands, class distribution, rank distribution, Achievement Points averages/median and top achievement members when the client supplies those fields.
+- Added click-to-filter drill-downs from status, level bands, classes, ranks, achievement ranges and last-online age into the existing Guild roster list. Search, global contact filters and sorting continue to work together with Guild filters.
+- Added Achievement Points as a Guild roster sort mode and exposed Achievement Points / Guild Achievement Rank in a selected Guild member profile when available.
+- Added Guild MOTD and Guild Information text to Overview when the client API provides them.
+- Reads the documented GetGuildRosterInfo fields (including Achievement Points and Achievement Rank) and GetGuildRosterLastOnline when available. Missing values are excluded from averages and shown as unavailable, not treated as zero.
+- Guild metrics are calculated from the current client-provided roster and cached until GUILD_ROSTER_UPDATE / PLAYER_GUILD_UPDATE. The Guild roster refresh button uses the game's own request API; no polling or external network requests were added.
+- Preserved Friends Manager, Social Hub customization, Player Journal, History, Backup/Restore, Whisper layout, main chat tabs, link handling, notifications and sound controls.
+- Syntax-checked all Lua files and tested Guild aggregation, level/rank/class/achievement filters and sorting with synthetic roster data. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.35 - Friends Manager / Bulk Contact Actions
+- Added an opt-in multi-select mode to Social Hub contact categories. Clicking a contact row toggles its selection; right-click still opens the existing per-contact action menu.
+- Added Select All Visible and Clear Selection commands.
+- Added bulk local actions for Favorites, Pins and personal contact groups, including Remove Selected from the currently selected custom group.
+- Added Create Group from Selection to create a new private SmartChat group already populated with the selected contacts.
+- Bulk actions affect only SmartChat's local Favorites, Pins and private groups. They do not bypass Blizzard restrictions or mass-modify the in-game Friends, Guild or Ignore lists.
+- Selection state is session-only and is not added to SavedVariables or portable backups.
+- Kept Player Journal, Social Hub History, Battle.net context, Whisper, main chat tabs, sounds, shortcuts, notifications, Backup/Restore and Link Handler unchanged.
+- Syntax-checked all Lua files. Bulk action data operations were tested with mocked contacts and groups. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.31 - Smart Contact Filters and Search
+- Replaced the legacy Online only checkbox with one compact Quick Contact Filter control. It supports All, Available, Online, Offline, AFK, DND, Unknown, Favorites, Pinned, Unread and Has Notes.
+- Preserved older SavedVariables: an existing onlineOnly=true preference migrates to the Available filter with the same behavior. Selecting a new filter clears the legacy flag.
+- Quick filters combine with the selected Social Hub category and text search; right-click the filter button to reset it to All.
+- Expanded search across character name, class, class token, level, role, status, zone, Guild rank/name, BattleTag, personal groups, Favorites, Pins, unread state, note text and quick-note tags.
+- Added Unread as a contact sort mode, with contacts carrying more unread Whispers ordered first after existing Pin/Favorite priority.
+- The active filter is shown beside the category result count. The contact list remains on-demand and event/refresh-driven; no background polling, network requests or permanent timers were added.
+- Kept main chat tabs, the vertical single-Whisper layout, Social Hub customization, Player Journal, notifications, backup/recovery and web link handling intact.
+- Syntax-checked all Lua files and tested contact-filter predicates plus legacy onlineOnly migration with synthetic contacts. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.30 - Social Hub Customization
+- Added a Social Hub Customize panel opened from the Hub header.
+- Added per-category visibility controls and up/down ordering for the Social Hub category bar. Overview remains available as a safe navigation entry.
+- Added Player Profile section visibility and ordering controls. Overview remains available.
+- Added contact-list appearance options: compact or comfortable rows, status dots, relationship badges, Class/Level metadata, personal group labels and Favorite/Pin markers.
+- Exposed the existing social notification master switch and per-event switches inside Social Hub customization while keeping the existing Settings page in sync through the same SavedVariables.
+- Added a Reset Layout Defaults action that changes only Social Hub layout and appearance preferences; it does not erase contacts, groups, notes, history or notification preferences.
+- Preferences are stored in the existing local SmartChatDB SavedVariables. No timers, polling, network requests or new history records were added.
+- Kept the main chat tabs, Whisper contact pane, message/channel colors, Link Handler, Player Journal and backup format unchanged.
+- Syntax-checked all Lua files and inspected the customization layout logic. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.29 - Shared Group History Comparison
+- Added a Shared profile section that compares two players using recorded group-session history.
+- Added a per-player list of all recorded group partners while preserving the existing top-five partner summary for the Relationship and Overview sections.
+- Added a lightweight Compare control: left-click cycles through known shared group partners; right-click cycles backwards.
+- Shared-session results show each player's recorded attendance time and visit count, plus session date, type, group size, difficulty and recorded locations when available.
+- Shared history uses only locally recorded group events where both players have attendance entries. Older sessions without individual attendance are clearly marked estimated.
+- The UI explicitly describes this as membership in the same tracked session, not exact simultaneous overlap or dungeon completion.
+- The current Journal time-range filter applies to shared-session comparisons. No new background loops, timers, network requests or persistent data fields were added.
+- Kept existing chat tabs, Whisper layout, Social Hub, Player Journal, Backup/Restore, notifications and web link handling intact.
+- Syntax-checked all Lua files and tested shared-session aggregation with synthetic attendance records. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.26 - Player Profile Sections and Relationship Insights
+- Reworked the selected-contact area in Social Hub into four lightweight profile sections: Overview, History, Notes and Relationship.
+- Overview now summarizes locally recorded interactions, group sessions and time, most frequent group partners, last shared group session, last Whisper interaction, known locations, and saved personal tags/notes.
+- Added a dedicated Notes view for quick tags, optional text and last-updated time; the existing Quick Note editor remains the only editing path.
+- Added a Relationship view showing current in-game relationship signals, Favorites/Pins, private contact groups, recorded Friend/Guild join history, most frequent shared group partners and filtered social-history events.
+- Expanded player-summary aggregation with the top five players appearing in the same recorded group sessions, requiring attendance records for both players. This records membership in the same session, not exact simultaneous overlap, dungeon completion or friendship quality.
+- Added profile navigation buttons and adjusted the timeline filter row/scroll area without changing the main chat tabs, Whisper routing, message colors, Social Hub categories or backup format.
+- No new background loops, timers, network requests or SavedVariables event fields were added. Aggregations run only when a profile view is refreshed.
+- Syntax-checked all Lua files and validated the ZIP. Not tested inside the live WoW: Forever client.
+
+SmartChat 0.7.23 - Player Journal Profiles, Timeline Filters and Social Backup
+- Expanded per-player Journal profiles with local summaries for event count, group sessions and time, Whisper interaction counts, Friend/Guild changes, first/last recorded activity and known locations.
+- Added event-type and time-range filters to the Activity and per-player Journal timelines. Filters are applied only when the Social Hub view is refreshed; no background processing was added.
+- Enriched newly recorded group sessions with available instance type, difficulty name/ID, instance ID, maximum observed group size, start/end timestamps, duration and visited locations. Group sessions describe co-presence only and do not claim dungeon completion.
+- Added a portable plain-text Social Data Backup / Restore tool. Export includes Favorites, Pins, private contact groups and members, player notes/tags and Player Journal metadata. Import merges with existing local data and deduplicates matching events.
+- Backups exclude Whisper message text, chat history, Battle.net account identifiers and unrelated addon settings. Export/import are user-initiated and use no network services.
+- Preserved the single Whisper tab and vertical contacts, regular chat tabs and colors, Social Hub, Web Link Handler, notifications and sound settings.
+- Syntax-checked all Lua files and validated the ZIP. Not tested inside the live WoW Forever client.
+
+SmartChat 0.7.22 - Social Activity Feed and Notifications
+- Added event-driven Friend presence snapshots using C_FriendList FriendInfo connected/afk/dnd fields; known Online, Offline, AFK and DND transitions can be recorded in Player Journal.
+- Added Guild member presence snapshots and optional Activity events. Guild presence tracking is OFF by default to avoid high event volume in large guilds.
+- Added Party/Raid member join/leave Activity events as a separate opt-in from Group session tracking.
+- Added Battle.net presence snapshot comparison after the existing cache refresh; account IDs are used to associate character/account rows. Unknown and Appear Offline states are never interpreted as Offline.
+- Added optional, local in-game toast notifications for Friend online/offline, Friend list changes, Guild membership/presence changes, Party/Raid roster changes and Battle.net presence changes.
+- Social notifications are OFF by default and are configured independently from Player Journal tracking. Toasts are queued with a small bounded queue, expire after five seconds and open Social Hub when clicked.
+- No polling loop, network request or message-text storage was added. Presence and roster history remains local SavedVariables data and is subject to the existing event retention/cap.
+- Expanded the Social & Journal Settings panel with help tooltips for each new tracking and notification option.
+- Preserved the single Whisper tab, vertical contact list, main chat tabs, Social Hub, Player Journal, Web Link Handler and sound controls.
+- Syntax-checked all Lua files and validated the ZIP. Not tested inside the live WoW Forever client.
+
+SmartChat 0.7.21 - Web Link Handler
+- Expanded the Battle.net category to keep friends visible even when they are offline or currently playing a non-WoW game, when the account API exposes a safe display name.
+- Shows Battle.net account-level status and last-online information when supplied by the client. Account-only rows are clearly identified and do not offer invalid WoW Whisper, Party or player-ignore actions without a character name.
+- When a WoW character is available, the Hub continues to show the actual character with class, level, realm, zone and BattleTag details instead of duplicating an account-only row.
+- Added Social Hub sort modes for Guild Rank, Level and Class, alongside Status, Name and Recent.
+- Guild rows now show rank, class, level and last reported zone; Group rows show role when the client exposes it.
+- Added Battle.net account count to the Social Hub summary.
+- Uses account last-online timestamps for explicit OFFLINE status when the API does not expose a direct account online flag; respects appear-offline privacy by leaving presence Unknown.
+- Kept all Battle.net information client-sourced; unavailable or privacy-hidden names remain generic/unknown rather than being exposed or guessed.
+- Added the planned Website/Discord URL click-to-copy feature to the roadmap. It is not implemented in this release.
+- Preserved the main chat, single Whisper tab, vertical Whisper contacts, Social Hub, Player Journal and existing settings.
+- Not tested inside the live WoW Forever client.
+
+SmartChat 0.7.19 - Social Hub and Player Journal
+- Expanded Social Hub with contact search, Favorites, pins, custom contact groups and right-click quick actions.
+- Added optional local Player Journal with event-driven relationship and group history, one-click note tags and private contact notes.
+- Added Overview, Activity, Ignored and Journal sections; history content is stored locally and Whisper message text is not copied into the Journal.
+- Player Journal is OFF by default and uses bounded retention/event limits to keep SavedVariables compact.
+- Not tested inside the live WoW Forever client.
+
+SmartChat 0.7.18 - Whisper Contact Details and Presence
+- Added the same relationship badges (F/B/G/P) to the vertical Whisper contact list, using the existing badge colors and the existing Badges setting.
+- Added Class and Level beneath each Whisper contact name; unavailable values are shown as Unknown / Lv. ?.
+- Kept the existing custom name-color mode and status dot in the contact list.
+- Guild roster status now maps the native AFK and DND status codes as well as online/offline presence.
+- Preserved AFK/DND when another source reports only a basic online state; recent Whisper presence is only used when no stronger status is available.
+- Contact rows and the Social Hub refresh when Friend, Guild, Group, Battle.net, badge and name-color data changes.
+- The existing badges and player-name coloring in regular chat tabs are retained; message text and channel colors are unchanged.
+- Not tested inside the live WoW Forever client.
+
+SmartChat 0.7.16 - Social Hub + Single Whisper Tab
+- Restored Social Hub as an independent dock icon and compact contact window.
+- Added a Whispers category to Social Hub, sharing the recent conversation list with the main Whisper tab.
+- Kept exactly one main Whisper tab; contacts appear as a secondary row of tab-style buttons above the main tab strip.
+- Selecting a contact filters the normal chat frame to that conversation and routes replies to that player.
+- Saved up to 20 recent Whisper contacts across sessions; message previews remain session-only.
+- Next/Previous Whisper shortcuts now cycle contacts inside the single Whisper tab.
+- Not tested in the live WoW Forever client.
+
+SmartChat 0.7.14 - Social Hub Preview
+- Replaced the Whisper Contacts dock icon with Social Hub.
+- Added All, Friends, Guild, Group, Recent and Battle.net sections in one compact two-column panel.
+- Contact selection shows available presence, class, level, zone, relationship badges and recent session-only Whisper preview.
+- Open Whisper opens the existing SmartChat conversation tab; it does not create a separate chat window.
+- Friend, Guild, Group and Battle.net contacts are sourced from the game APIs. Missing information remains unknown.
+- This is an experimental UI preview and has not been tested inside the live WoW Forever client.
+
+SmartChat 0.7.12 - Forever
+- Added a per-tab volume slider to each tab's right-click menu.
+- The right-click slider and Sound & Notifications page edit the same saved per-tab volume.
+- The right-click menu now displays Master Volume and the resulting effective volume.
+- The effective-volume readouts refresh in both places when Master Mute, Master Volume, or a tab volume changes.
+- Live Preview can also audition volume changes from the right-click menu when enabled.
+- Manual Test playback respects Master Mute and Master/Tab volume; it remains available when that tab's notification toggle is off.
+
+SmartChat 0.7.11 - Forever
+- Added an original 10-sound Sound Pack. Each sound includes ten pre-rendered OGG gain levels (10% to 100%).
+- Added Master Volume; effective level is Master Volume multiplied by the individual tab volume.
+- Mute All now suppresses notification, Test and Live Preview playback while preserving saved volume settings.
+- Per-tab sound selection now opens a categorized picker for built-in SoundKit sounds and all ten Sound Pack sounds.
+- Live Preview supports both Master Volume and per-tab volume changes; Test uses the same selected sound and effective volume.
+- Existing SavedVariables and individual tab sound settings are preserved.
+- Speaker tooltips explicitly report the global Mute All state.
+
+SmartChat 0.7.10 - Forever
+- Resized and repositioned the two shortcut buttons in the lower-right of the main Settings window so they stay clear of the panel edge.
+
+SmartChat 0.7.9 - Forever
+- Added a dedicated Sound & Notifications page inside Settings.
+- Added a master toggle for all incoming SmartChat notification sounds and a Live Preview toggle (OFF by default).
+- Added per-tab notification volume sliders and Test buttons for built-in and custom tabs.
+- Uses C_Sound.PlaySound volumeOverride per playback on Forever, without changing the game's global audio CVars.
+- Live Preview is rate-limited while dragging and stops its previous preview sound before playing the next one.
+- Existing per-tab sound on/off and sound-kit selections are preserved; the speaker icons reflect the master sound toggle.
+
+SmartChat 0.7.8 - Forever
+- Fixed strict per-tab chat isolation: Global is the only default aggregate view.
+- Say, Party, Raid, Guild, Officer, Instance, Whisper and channel tabs now show only their own stream by default (nearby Emotes remain with Say).
+- Unread/sound routing follows the same separation: Officer no longer increments Guild, and Instance no longer increments Party; custom tabs receive their own events.
+- General is restricted to channel 1; custom channel tabs are restricted to their configured channel.
+- Unknown/unclassified message types are Global-only by default instead of leaking into every tab.
+- Added a safe display-filter migration: old generated defaults are upgraded while custom user filters are preserved.
+
+SmartChat 0.7.7 - Forever
+- Guild relationship name colors now inherit the live Guild tab color.
+- Group relationship name colors inherit the Party tab color or Raid tab color, depending on whether the sender is in a raid.
+- All multi-relationship name colors (for example FG, FP, GP, FGP and combinations including B) are calculated dynamically from their source colors; old fixed combination colors are ignored.
+- Friend and Battle.net friend base colors remain independent. Changing a tab color affects new incoming chat lines immediately, without reloading.
+
+SmartChat 0.7.6 - Forever
+- Replaced Set buttons and a shared capture box with an individual clickable shortcut field on every action row.
+- Free key suggestions are shown as muted placeholder text and are recalculated against the current binding map so occupied keys are not suggested.
+- Added a prominent Keyboard shortcuts button inside Settings.
+- Replaced the missing/unclear keyboard texture in the side dock with a custom-drawn keyboard icon.
+- Kept existing binding conflict confirmation, saved key tracking, and combat restrictions.
+
+SmartChat 0.7.5 - Forever
+- Added a Global aggregate tab that shows chat and game/system messages together while keeping channel-specific tabs independent.
+- Incoming chat messages can increment both the matching channel tab and Global independently; only one notification sound is played per message.
+- The currently selected matching tab has priority for notification sound; if it is muted, another matching tab with sound enabled may provide the single alert.
+- Own outgoing chat messages appear in Global but do not create unread counts or notification sounds.
+- Global is a read-only view and preserves the last real chat-send destination.
+- Added a Global shortcut action (suggested CTRL-ALT-G) to the keyboard shortcut editor and binding conflict checks.
+
+SmartChat 0.7.4 - Forever
+- Constrained tab drag-and-drop to the horizontal tab strip; tabs no longer move freely around the screen.
+- Tabs follow the pointer horizontally while remaining vertically aligned with the row.
+- Releasing outside the strip cancels the drag and restores the original order.
+
+SmartChat 0.7.3 - Forever
+- Fixed tab dragging: tabs are now movable frames; dragging starts real frame movement and release reorders/saves the tab position.
+- Restored a clearly visible speaker toggle on every tab (including Say and General); the icon remains visible in both ON and OFF states and uses color to show status.
+- Reserved a dedicated speaker-icon area so tab labels and unread counters cannot cover it.
+- Replaced translucent stock dialog artwork in Settings, Shortcuts and Copy windows with a solid dark background; 100% opacity is now fully opaque and the slider controls transparency as intended.
+
+SmartChat 0.7.2 - Forever
+- Moved the vertical utility dock from the right side to the LEFT side of the chat panel.
+- Apply selected chat type/sticky type immediately to the edit box that ChatFrameUtil.ChooseBoxForSend selects, including while hidden; this handles IM chat style and last-active/docked chat windows instead of always changing DEFAULT_CHAT_FRAME.editBox.
+- Added /sc route diagnostics to compare selected tab, current edit-box type and sticky type.
+- Warn when Party, Raid, Instance or Guild chat cannot be used by the character/group state.
+
+SmartChat 0.7.1 - Forever
+- Added a keyboard shortcuts dock icon and an in-AddOn shortcut editor.
+- Checks existing key assignments and asks before replacing an occupied key.
+- Re-checks assigned shortcuts when the game updates its binding map.
+- Added drag-and-drop insertion by horizontal drop position, including gaps between tabs.
+- Corrected shortcut setup instructions and updated addon documentation.
+
+SmartChat 0.7.0 (Forever)
+- Tab clicks switch the visible chat without focusing the edit box by default; old behavior is optional.
+- Added a vertical icon dock beside the chat window: channel selector, whisper contacts, settings, copy and new tab.
+- Added drag-and-drop tab reordering with before/after placement; retained right-click menu and middle-click fallback.
+- Added shortcut conflict diagnostics and the side icon dock. (The shortcut editor was added in 0.7.1.)
+
+SmartChat 0.6.1 (Forever)
+- Added a Forever-only TOC using interface 16001.
+- Routed chat-channel selection and chat opening through the modern ChatFrameUtil/EditBox API.
+- Added guarded fallbacks for older edit-box APIs without relying on old attributes on Forever.
+- Added full-name/surname-safe player matching and normalized dynamic whisper-tab IDs.
+- Guarded optional event and message-filter registration so one unsupported event does not stop the addon.
+- Disabled chat-history recording by default on a fresh installation; existing user preference is preserved.
+- Updated diagnostics, Forever installation instructions and troubleshooting/privacy notes.
+
+
+Version 0.7.13 - Whisper Inbox and Player Identity
+- Reworked the Whisper contacts popup into a compact two-column inbox with a vertical conversation list and recent-message preview.
+- Selecting a contact opens that character's existing SmartChat Whisper tab; no separate per-contact chat window is created.
+- Added online, offline and unknown presence indicators, plus AFK/DND states when the client exposes them.
+- Added available class and level details from Friend, Guild, Group and Battle.net data sources. Unknown data is shown as unknown rather than guessed.
+- Added a Name Color Mode setting: Relationship (default) or Class. Only player names are recolored; message text and channel colors are unchanged.
+- Added English help tooltips for the new name-color setting.
+- Whisper preview messages are kept in session memory only and are not added to SavedVariables.
+- This release has not yet been tested inside the live WoW Forever client.
+
+
+Version 0.7.16 - Social Hub + Single Whisper Tab
+- Restored Social Hub as an independent dock icon and contact window.
+- Added a Whispers category to Social Hub, sharing the same recent whisper contacts.
+- Kept exactly one main Whisper tab; conversations no longer create separate main chat tabs.
+- Added a native-looking secondary contact tab strip above the main tab row, visible only while Whisper is selected.
+- Selecting a contact filters the normal chat frame to that conversation and routes replies to that player.
+- The Social Hub and Whisper tab use the same contact list.
+- Next/Previous Whisper shortcuts now cycle contacts inside the single Whisper tab.
+- Not tested in the live WoW Forever client.
+
+
+Version 0.7.17
+- Replaced the horizontal Whisper contact strip with a compact vertical contact list embedded at the left side of the main chat area.
+- The selected Whisper conversation remains in the game's existing chat message frame and uses the normal chat input.
+- Contact rows reuse SmartChat tab styling, including the selected accent, hover highlight, relationship name colors, unread counts, and presence dots.
+- The Social Hub dock icon and independent Social Hub panel remain available, including its Whispers category.
+- The chat frame returns to its original position and size when leaving the Whisper tab.
+- Not yet tested in the live WoW: Forever client.
+
+
+VERSION 0.7.19 - SOCIAL HUB WORKSPACE AND OPTIONAL PLAYER JOURNAL
+- Expanded Social Hub with unified search, online-only filtering, sorting, Favorites, pinned contacts and private contact groups.
+- Added an Ignored category and ignore/unignore actions when supported by the client API.
+- Added right-click contact actions for Whisper, Favorites, Pin, Quick Notes, Player Journal, contact-group membership, Party invite and ignore management.
+- Add Friend now prepares the game's /friend command in the chat input for the player to confirm, because the direct C_FriendList.AddFriend API is restricted.
+- Added a global local Activity feed and an integrated, scrollable Player Journal view inside Social Hub.
+- Added optional Player Journal tracking for Friend/Guild relationship changes, group sessions and visited locations, Whisper interaction dates/counts without message text, and optional Quest turn-ins with group roster context.
+- Added ready-made Quick Note tags, optional personal text, a 500-note cap, 90-day default event retention and a 500-event default cap. Journal tracking is OFF by default and uses local SavedVariables only.
+- Tracking is event-driven with no polling loop or network requests. Timeline rendering is lazy and occurs only when the Journal or Activity view is opened.
+- Improved Group session history to keep the visited instance/zone sequence and fixed location lookup for instance names.
+- Made the Social Hub activity transcript scrollable and improved search to include available class, zone, rank, BattleTag, custom groups and personal note tags.
+- Kept the main chat tabs, one-tab Whisper behavior, vertical Whisper contact rail, relationship badges and player-name coloring intact.
+- Syntax-checked all Lua files. Not tested inside the live WoW Forever client.
+
+
+0.7.21
+- Added optional clickable web and Discord addresses in chat.
+- Clicking a detected web address opens a small copy box with the URL selected for Ctrl+C.
+- No external browser launch or network requests; links are not activated in combat.
+- Existing native WoW hyperlinks retain their original behavior.
+
+
+Version 0.7.24 - Social Backup Wizard
+- Rebuilt Social Data Backup / Restore as separate Export and Import pages with a cleaner step-by-step workflow.
+- Export now shows a local-data summary and automatically selects generated backup text; press Ctrl+C to copy it to a plain-text file.
+- Import now has a dedicated paste area, validation step, content preview and explicit Import & Merge action.
+- Import is disabled until the current text passes validation; editing the pasted text invalidates the preview and requires re-validation.
+- Empty or malformed backups are rejected before changing saved data. Existing local information is merged, not replaced; duplicate journal events remain filtered.
+- Clarified the game-client limitation: AddOns cannot directly access arbitrary files or the operating-system clipboard, so file saving and Ctrl+C / Ctrl+V remain manual.
+- Kept Player Journal local-only and excluded Whisper message text and Battle.net account identifiers from backups.
+- Not yet tested inside the live WoW: Forever client.
+
+
+Version 0.7.25 - Group Attendance and Local Recovery
+- Added per-player group-session attendance tracking. The timeline now distinguishes how long each known player actually remained in the group, including players who join, leave and rejoin during one session.
+- Player Journal group-time summaries now use individual attendance for new sessions. Older events without attendance data remain visible and are labelled as estimated in the player's timeline.
+- Added attendance details to the portable backup format as an optional backward-compatible field; older 0.7.24 backups remain importable.
+- Added a Local Save page explaining that normal in-game data is persisted through WoW SavedVariables on logout/reload; Ctrl+C / Ctrl+V is only needed for portable export/import.
+- Added one local restore point for Social Hub and Player Journal data, with a manual Create Restore Point action and automatic point creation before portable imports. Restore swaps current and saved states so the prior state remains available.
+- Added recovery-point information to the Backup / Restore UI. Local restore points are not included in portable backups to avoid recursive backup growth.
+- Group sessions left in SavedVariables after an interrupted client shutdown are closed at the last known update time on next login, avoiding counting offline time as group attendance.
+- Not yet tested inside the live WoW: Forever client.
+
+
+Version 0.7.27 - Notes Library and Local Data Controls
+- Added a dedicated Notes category in Social Hub for contacts with saved private notes or quick tags.
+- Note rows show a compact tag or note preview and open the contact's Notes profile section.
+- Added a confirmed Delete Note action; removing a note does not alter Journal events or in-game relationships.
+- Added Clear Local Journal Data per contact. Shared group/quest events are retained for other participants, with the selected player's attendance removed.
+- Added confirmation and an automatic local recovery point before clearing all completed Journal event history.
+- Favorites, Pins, personal contact groups and in-game Friend/Guild/Ignore lists are preserved by Journal cleanup.
+- No network requests, polling loops or permanent background timers were added.
+
+
+Version 0.7.28 - Social Dashboard and Group Management
+- Upgraded the Social Hub Overview with five compact, clickable summary cards for Friends, Guild, Whispers, Favorites and personal Groups. Each card navigates directly to its category.
+- Dashboard card values are derived from current local/game-provided data on refresh; no background polling or network requests were added.
+- Added an overview statistics helper for Favorites, Pins, private group counts and membership totals.
+- Added Rename Group to the custom group manager. Right-click the selected group selector in the Groups category to rename or delete the current group; left-click still cycles groups.
+- Group selector now shows the selected group's member count. Renaming preserves group members and position in the group order.
+- Deleting a custom group now creates a local recovery point before removal.
+- Existing contact context menus continue to add or remove players from multiple personal groups.
+- Kept the main chat, Whisper layout, Social Hub profile sections, Player Journal, notifications, Backup/Restore and Web Link Handler intact.
+- Syntax-checked all Lua files and validated the ZIP. Not tested inside the live WoW: Forever client.
+
+
+Version 0.7.32 - Battle.net Account / Game Account Context
+- Linked each Battle.net friend account to the game-account records currently exposed by the client API.
+- The BNet category keeps account-only contacts visible and shows account context for WoW character rows, including BattleTag/display name, reported game-account count, realm and known game presence.
+- Selecting a WoW character now shows other currently reported game accounts and WoW character records associated with the same Battle.net friend account. Non-WoW game presence is shown when the API exposes a client/game label or rich-presence string.
+- The default BNet list sort groups character rows by Battle.net account display identity; search also matches linked characters, realms, game labels and rich-presence text.
+- Deduplicated the account-level gameAccountInfo and indexed GetFriendGameAccountInfo records so one game account is not listed twice when both APIs describe it. Account-level Online status is aggregated from reported game accounts without overwriting per-character presence.
+- Battle.net account and game-account identifiers remain in-memory session data only. They are not written to SavedVariables or portable backups. The UI explicitly states that this is the currently reported game-account data, not a complete character roster.
+- Kept non-WoW and offline Battle.net contacts visible without exposing invalid Whisper/Party actions.
+- Syntax-checked all Lua files and tested account/game-account grouping, duplicate removal, multi-account status aggregation and offline/non-WoW account visibility with mocked API data. Not tested inside the live WoW: Forever client.
+
+
+Version 0.7.33 - Social Intelligence Completion
+- Completed the planned Social Intelligence pass with a dedicated Insights category in Social Hub.
+- Added on-demand weekly, monthly, 90-day and all-time summaries for recorded social events, group sessions, tracked group time, Whisper interactions, relationship changes and recorded locations.
+- Added Smart Player Discovery rankings based only on locally recorded group and Whisper interactions and other known contact sources.
+- Added transparent, optional suggestions to Favorite frequent group partners or Pin recurring Whisper contacts. No contact is changed automatically.
+- Added a Network section to Player Profiles showing recorded group partners, current Guild roster connections, locally assigned personal-group co-members and currently reported Battle.net characters for the same account when available.
+- Explicitly does not infer mutual friends because the game does not expose other playersâ Friend Lists. Group co-presence is not presented as objective completion or exact simultaneous presence.
+- All insights are calculated only when the Insights category or a player's Network section is opened. No additional SavedVariables tracking, polling, timers or network calls were added.
+- Preserved the main chat, single Whisper tab, vertical Whisper contact list, link handling, Player Journal, backup/restore, sound controls and shortcuts.
+- Syntax-checked all Lua files and ran mocked-data checks for intelligence summaries, recommendations and relationship network output. Not tested inside the live WoW Forever client.
+
+
+Version 0.7.33 - Social Hub Completion
+- Closed the planned Social Hub / Social Intelligence feature pass with Insights, Smart Player Discovery, evidence-based Relationship Network, per-player interaction summaries, optional Favorite/Pin prompts and period-filtered activity analytics.
+- Added a Network profile section covering recorded shared group sessions, current Guild roster context, private SmartChat groups and Battle.net character context exposed by the client.
+- Fixed the selected-player key lookup in relationship-network group history so shared group partners are correctly counted.
+- Clarified Quest roster observations in Insights; these represent the player's own turn-in while group members were present, not proof that every member completed the Quest.
+- All Social Intelligence remains on-demand, read-only, local and derived from the existing bounded Journal. No new polling, timers, network requests or persistent event stores were added.
+- This release completes the Social Intelligence pass only. Social Hub remains under active development in its other categories; the Player Journal/History receives a dedicated finalization pass in 0.7.34.
+- Syntax-checked all 10 Lua files and ran mocked-data checks for summaries, discoveries, recommendations, time-filtered network data, Guild context, private groups and Battle.net character context. Not tested in the live WoW: Forever client.
+
+
+Version 0.7.34 - Player Journal History Completion Pass
+- Hardened Guild history snapshots so changing or leaving your own Guild records one character-level Guild context event instead of incorrectly marking every member of the former roster as having left the Guild.
+- Friend roster snapshots now distinguish an unavailable API from a valid empty Friend List, preventing a temporary API read failure from being recorded as mass Friend removals/additions.
+- Active group sessions are finalized and saved when Player Journal or Group tracking is switched off, rather than silently discarding the in-progress attendance record.
+- Added additional zone-change events so multi-zone instances can append location transitions to an active group session when the client reports them.
+- Whisper interaction metadata now coalesces per contact within a 15-minute window using a temporary in-memory index; message text remains excluded.
+- Player Journal and Activity timelines now sort by the latest activity timestamp, so an updated/coalesced Whisper interaction moves to its true recent position and displays its time range.
+- Added Guild-context history to Social/Guild filters and player summaries.
+- Clarified that Journal history begins when tracking is enabled and cannot be reconstructed retroactively.
+- Preserved the 90-day default retention, 500-event default cap, 500-note cap, quick tags, event filters, per-player attendance, shared-session history, Insights, local backups and restore points.
+- No polling loops, network requests, chat-text logging or new permanent background timers were added.
+- Syntax-checked all Lua files and ran targeted mocked-data tests for Whisper aggregation/sorting, group attendance, Guild context transitions, Friend API availability and history filters. Not tested inside the live WoW: Forever client.
