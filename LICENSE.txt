@@ -1,0 +1,22 @@
+Copyright (c) 2026 Arowtor. All rights reserved.
+
+The SmartChat project, including its source code, documentation, visual design,
+and project branding, is protected by applicable copyright laws.
+
+NO LICENSE IS GRANTED.
+
+Except for the limited rights necessary to view, display, and fork this public
+repository as permitted by the GitHub Terms of Service, no person or entity is
+granted permission to use, reproduce, modify, adapt, publish, distribute,
+sublicense, sell, or create derivative works from any part of this project
+without prior written permission from the copyright holder.
+
+This notice does not supersede the terms of any third-party component or asset
+that may be identified in THIRD-PARTY-NOTICES.md or ASSET-CREDITS.md. Such
+components remain governed by their own respective licenses or permissions.
+
+THE PROJECT IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY ARISING
+FROM, OUT OF, OR IN CONNECTION WITH THE PROJECT OR ITS USE.
