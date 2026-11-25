@@ -337,7 +337,7 @@ local function BuildMenu()
 
     -- hide + action
     R.actions = { f = Row(menu) }
-    menu.hideBtn = Btn(R.actions.f, "Hide tab", 0, -2, 114, function()
+    menu.hideBtn = Btn(R.actions.f, "Hide tab", 0, -2, 98, function()
         if SC.VisibleTabCount() <= 1 then SC.Print("keep at least one tab visible."); return end
         SC.db.hidden[menu.id] = true
         menu:Hide()
@@ -383,7 +383,7 @@ function SC.ShowTabMenu(tab)
     menu.kitBtn:SetText(SoundText(SC.db.soundKit[key]))
     if menu.RefreshSoundVolume then menu.RefreshSoundVolume() end
     R.display.show = true
-    menu.displayBtn:SetText("Display: " .. SC.DisplaySummary(id) .. "   (choose what this tab shows)")
+    menu.displayBtn:SetText("Display: " .. SC.DisplaySummary(id))
     SmallFont(menu.displayBtn)
     R.reply.show = true
     menu.replyCB:SetChecked(SC.ReplyEnabled(id))
@@ -613,6 +613,8 @@ local function BuildDisplay()
     disp.whoCB:SetSize(24, 24); disp.whoCB:SetPoint("TOPLEFT", -2, 0)
     disp.whoText = R.who.f:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     disp.whoText:SetPoint("LEFT", disp.whoCB, "RIGHT", 2, 0)
+    disp.whoText:SetWidth(184)
+    disp.whoText:SetJustifyH("LEFT")
     Help(R.who.f, 216, -4, "For a dynamic Whisper tab, show only messages from the conversation currently assigned to it.")
     disp.whoCB:SetScript("OnClick", function(self)
         local cfg, tab = DispCfg(), SC.TabFrame(disp.id)
