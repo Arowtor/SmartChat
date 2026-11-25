@@ -2,11 +2,11 @@
 
 ## SmartChat sound pack
 
-The SmartChat 0.7.41 package contains a bundled sound pack of 100 OGG files: 10 original sound designs with 10 volume variants each (10% through 100%).
+The SmartChat 0.5.0-beta.1 public beta package (based on development line 0.7.41) contains a bundled sound pack of 100 OGG files: 10 original sound designs with 10 volume variants each (10% through 100%).
 
 The project owner has specified that these sounds are custom-made for SmartChat and are not Blizzard/World of Warcraft game audio. They are intended to remain bundled with the add-on.
 
-**Publication status:** all 100 OGG files are committed unchanged under `Sounds/` in this repository and are included in the 0.7.41 source tree.
+**Publication status:** all 100 OGG files are committed unchanged under `Sounds/` in this repository and are included in the 0.5.0-beta.1 public beta package and source tree.
 
 ## Other visual and audio assets
 
