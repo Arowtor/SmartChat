@@ -1,14 +1,12 @@
 # Third-Party Notices
 
-A complete dependency and asset-license audit has not yet been completed.
+## SmartChat 0.5.0-beta.1 package audit
 
-Before publishing a complete distributable release, inspect all bundled libraries and assets and record:
-- component or asset name and version;
-- author or copyright holder;
-- source URL;
-- exact license or written permission;
-- required notices and attribution.
+The distributable package was checked for bundled dependencies and separate third-party asset files.
 
-Do not assume that an asset is redistributable merely because it is free to download.
+- **Code libraries:** No third-party Lua libraries or embedded dependency folders are bundled. The add-on loads its own Lua files through `SmartChat.toc`.
+- **Fonts:** No font files are distributed. Font choices refer to fonts already installed by the World of Warcraft client.
+- **Game UI assets:** No Blizzard executable, texture, icon, or audio files are copied into the package. The TOC references an icon texture supplied by the player's installed game client.
+- **Sound pack:** The 100 OGG files are the 10 custom SmartChat notification sounds with pre-rendered volume levels. The project owner identifies these as original assets created specifically for SmartChat, not Blizzard game recordings or third-party music. See [ASSET-CREDITS.md](ASSET-CREDITS.md).
 
-The SmartChat project-level rights notice does not replace or override the license of any third-party component.
+No separate third-party code or asset notices were identified in the contents of this release package. Any future third-party component or asset must be reviewed for redistribution rights and documented here before it is included.
