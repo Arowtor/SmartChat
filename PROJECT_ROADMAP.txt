@@ -225,3 +225,55 @@ Status: VISUAL UPGRADE IMPLEMENTED in 0.7.41 with layered glow connections, capp
 traveling pulses, animated node halos/sparkles, ambient starfield and staggered node
 entrance effects. Default-off/lazy initialization retained. Live-client visual and
 performance verification still required.
+
+[2026-11-25] User request: Settings UI audit and cleanup. Do not modify code or
+change Social Hub behavior until the audit and plan are agreed. Review every
+settings surface, not only the main Settings window: main SmartChat Settings,
+Sound & Notifications, Chat Text & Fonts, Keyboard Shortcuts, Social & Journal
+Settings, the Social Hub's own Customize panel, and per-tab/right-click settings
+or any other secondary settings window. The user previously requested a small
+(?) help marker beside each setting/control, with a tooltip explaining what that
+setting does. Audit coverage across all settings surfaces and make the markers
+and explanations consistent; existing help markers are incomplete.
+
+Also inspect the reported settings layout issue: one setting/section appears
+misplaced or not aligned with its intended card/panel. Check the actual layout,
+column spacing, dynamic content and clipping/overflow before deciding the exact
+fix. The earlier static review noticed that the Hidden Tabs area reserves space
+for three rows even when no tabs are hidden, and that lower content may extend
+past the main panel; verify this in the live client rather than treating the
+static suspicion as confirmed.
+
+User-reported defect: clicking **Customize** inside the existing Social Hub opens
+a settings panel that appears almost empty. Inspect the dedicated
+`BuildHubSettingsPanel` / `SmartChatHubSettingsPanel` implementation and find
+why its controls are not visible or laid out correctly. The panel is intended
+to contain contact-list appearance, contact row density, visible-category
+visibility/order, Player Profile section visibility/order, social notification
+preferences and Reset Layout Defaults. Diagnose and fix this settings panel
+only after identifying the cause.
+
+Important scope restriction from the user: **do not change the Social Hub itself**
+while the user is testing it. Do not redesign, remove, reorganize or alter its
+main categories, Friends/Guild/Whisper/Groups/Network Map features, contact
+behavior, data handling or presentation. Work on the separate Customize settings
+panel only. Review the apparent overlap between social notification controls in
+Customize and Social & Journal Settings, but do not move, remove or consolidate
+those controls without the user's explicit approval.
+
+Execution order for this request:
+1. Inventory all settings windows and their controls; audit existing (?) tooltip
+   coverage and identify the additional secondary settings window the user
+   remembers.
+2. Diagnose the nearly empty Social Hub Customize settings panel, without
+   changing the Social Hub itself.
+3. Inspect and reproduce the misaligned/misplaced settings section and any
+   clipping/overflow; then propose the smallest layout correction.
+4. Review duplicated Social Notification settings and recommend ownership;
+   wait for approval before moving or removing any controls.
+5. After the user approves the plan, implement fixes in this order and verify
+   each settings window in the live WoW: Forever client. Keep the user-requested
+   no-code period in effect until they explicitly authorize implementation.
+
+Status: ADDED TO ROADMAP ONLY. No code, AddOn behavior, Social Hub feature or
+settings UI has been changed as part of this request.
