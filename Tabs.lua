@@ -4151,6 +4151,7 @@ local function BuildHubSettingsPanel()
     end)
     local rows = { child = child, headers = {}, preferences = {}, categories = {}, profiles = {} }
     panel.rows = rows
+    listFrame.settingsRows = rows
     local function header(key)
         local fs = child:CreateFontString(nil, "OVERLAY", "GameFontNormal")
         fs:SetTextColor(0.35, 0.78, 1)
