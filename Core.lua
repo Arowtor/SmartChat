@@ -104,9 +104,9 @@ SC.defaults = {
     filterMask = false,
 
     historyEnabled = false,
-    historyDays = 7,      -- 0 = keep forever
+    historyDays = 7,      -- 0 = no age-based expiry; the line cap still applies
     historyLoad = 100,    -- lines replayed at login
-    historyMax = 1000,    -- hard cap on stored lines
+    historyMax = 1000,    -- default maximum stored lines; configurable in Settings
     history = {},
 
     pinned = nil,
