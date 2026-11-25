@@ -891,11 +891,17 @@ Build = function()
     Help(panel, title, "Saves chat lines on your computer and shows the latest ones when you log in. Whisper text is saved too. Lines are not saved during boss encounters.")
     y = y - 24
     CB(panel, "Save chat between sessions", 20, y, function() return db.historyEnabled end, function(v) db.historyEnabled = v end); y = y - 28
-    lab = Label(panel, "Keep days (0 = forever):", 28, y - 3, "GameFontHighlightSmall")
-    NumBox(panel, 190, y, function() return db.historyDays end, function(v) db.historyDays = v; SC.PruneHistory() end)
+    lab = Label(panel, "Keep days (0 = no age limit):", 28, y - 3, "GameFontHighlightSmall")
+    Help(panel, lab, "Age limit for locally stored chat lines. Set to 0 to disable age-based cleanup; the maximum stored lines setting still applies.")
+    NumBox(panel, 190, y, function() return db.historyDays end, function(v) db.historyDays = math.max(0, math.floor(v)); SC.PruneHistory() end)
+    y = y - 26
+    lab = Label(panel, "Maximum stored lines:", 28, y - 3, "GameFontHighlightSmall")
+    Help(panel, lab, "Maximum number of chat lines retained locally (1-10000). This limit applies even when Keep days is set to 0.")
+    NumBox(panel, 190, y, function() return db.historyMax or 1000 end, function(v) db.historyMax = math.max(1, math.min(10000, math.floor(v))); SC.PruneHistory() end)
     y = y - 26
     lab = Label(panel, "Lines to load at login:", 28, y - 3, "GameFontHighlightSmall")
-    NumBox(panel, 190, y, function() return db.historyLoad end, function(v) db.historyLoad = v end); y = y - 28
+    Help(panel, lab, "How many of the most recent saved lines to display when you log in. This does not change the maximum number stored.")
+    NumBox(panel, 190, y, function() return db.historyLoad end, function(v) db.historyLoad = math.max(0, math.floor(v)) end); y = y - 28
     Btn(panel, "Clear history", 24, y, 130, function() SC.ClearHistory(); SC.Print("history cleared") end)
     y = y - 38
 
