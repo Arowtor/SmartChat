@@ -1,5 +1,13 @@
 SmartChat 0.5.0 Beta 1 - Public Beta Release
 
+LOCAL HISTORY AND PRIVACY
+  Chat History is disabled by default. When enabled, chat text including Whisper
+  text is stored locally in SavedVariables. Users can set the age limit and the
+  maximum stored line count in Settings (defaults: 7 days and 1,000 lines).
+  The login replay count is separate. Player Journal is also opt-in and stores
+  Whisper interaction metadata, not Whisper message content.
+
+
 Version 0.7.37 additions
 - Added reusable Group Templates: save a My Group or a multi-selected contact list as a template, create a new My Group from a saved template, update a template from a current group, invite its character members to your Party, or delete the template.
 - Added a Group Templates manager opened from the Groups category right-click menu. Templates are local snapshots; edits to the source My Group do not silently change a saved template.
