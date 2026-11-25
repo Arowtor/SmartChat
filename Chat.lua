@@ -759,11 +759,15 @@ end
 function SC.PruneHistory()
     local db = SC.db
     local h = db.history
+    local maxLines = math.floor(tonumber(db.historyMax) or 1000)
+    maxLines = math.max(1, math.min(10000, maxLines))
+    db.historyMax = maxLines
+
     if db.historyDays and db.historyDays > 0 then
         local cutoff = time() - db.historyDays * 86400
         while h[1] and (h[1].t or 0) < cutoff do table.remove(h, 1) end
     end
-    while #h > db.historyMax do table.remove(h, 1) end
+    while #h > maxLines do table.remove(h, 1) end
 end
 
 function SC.ReplayHistory()
@@ -885,7 +889,7 @@ ev:SetScript("OnEvent", function(_, event, msg, author, _, _, _, _, _, chIndex, 
         local def = SC.TABS[first]
         h[#h + 1] = { t = time(), ch = first, lab = def and def.label, who = safeAuthor, msg = msg,
                       out = (event == "CHAT_MSG_WHISPER_INFORM" or event == "CHAT_MSG_BN_WHISPER_INFORM") or nil }
-        if #h > SC.db.historyMax + 50 then SC.PruneHistory() end
+        SC.PruneHistory()
     end
 end)
 
