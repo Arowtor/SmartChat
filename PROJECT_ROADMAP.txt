@@ -275,5 +275,72 @@ Execution order for this request:
    each settings window in the live WoW: Forever client. Keep the user-requested
    no-code period in effect until they explicitly authorize implementation.
 
-Status: ADDED TO ROADMAP ONLY. No code, AddOn behavior, Social Hub feature or
-settings UI has been changed as part of this request.
+Status: AUDITED; findings and proposed sequence appended below this request.
+
+
+AUDIT FINDINGS (2026-11-25; source inspection only; no code changes)
+
+Step 1 - Settings surface inventory: COMPLETE.
+- Main SmartChat Settings: Display, Hidden Tabs, History, Word Filter,
+  Reorder Tabs, Opacity, Alerts, Keyboard Shortcuts entry point, and links to
+  secondary pages.
+- Separate secondary windows: Sound & Notifications, Chat Text & Fonts,
+  Social & Journal Settings, and the standalone SmartChat shortcuts editor.
+- Inside the Social Hub: the separate Customize panel (not the Social Hub's
+  main interface). This is the panel the user reports appears almost empty.
+- Additional contextual settings surfaces: right-click tab settings menu and
+  the new-tab/display menus. The My Group Templates manager is a management
+  window, not a general settings page.
+- Help-marker coverage is incomplete and manually added per control. Main
+  Settings has several labels/section headings with help but leaves some actual
+  controls without a marker (for example, Save chat between sessions, Clear
+  history, Mask instead of hide, opacity sliders, alert toggles and sound
+  selection). Sound & Notifications only explains Master Volume and Live Preview;
+  per-tab enable, sound choice, volume and Test controls lack individual markers.
+  The Keyboard Shortcuts editor has general instructions and a hover hint on
+  key-entry boxes, but no consistent (?) markers for its actions. Text & Fonts
+  has broad coverage. Social & Journal Settings has broad coverage. The Hub
+  Customize panel has markers designed for preference rows, ordering rows,
+  row density and Reset, but cannot currently display its content due to Step 2.
+  Tab right-click settings have ad-hoc tooltips on only selected controls.
+
+Step 2 - Nearly empty Social Hub Customize panel: ROOT CAUSE IDENTIFIED.
+- In Tabs.lua, RefreshHubSettingsRows() returns immediately unless
+  listFrame.settingsRows exists.
+- BuildHubSettingsPanel() creates the rows table and assigns it to
+  panel.rows, but does not assign the same table to listFrame.settingsRows.
+- Therefore the refresh function never positions/populates the headers or rows;
+  the panel opens with an effectively empty content area. This precisely
+  matches the user's report. Intended controls are contact appearance, row
+  density, visible categories/order, profile sections/order, social
+  notifications, and Reset Layout Defaults.
+- This is a settings-panel defect only. Do not change the Social Hub's main
+  interface, data, features or behavior.
+
+Step 3 - Main Settings layout: STATIC ISSUE IDENTIFIED; LIVE REPRODUCTION PENDING.
+- The main Settings panel is 700x660. The left-column layout reserves space for
+  three Hidden Tabs rows (84 px) even when fewer than three tabs are hidden.
+- After the fixed offsets, the bottom Word Filter controls reach approximately
+  y=-676 relative to the top anchor, extending about 16 px beyond the panel's
+  660 px height. The Mask instead of hiding checkbox is therefore at risk of
+  being clipped. Confirm in-game and choose the smallest correction (dynamic
+  Hidden Tabs height and/or scroll/height adjustment).
+- Do not assume this is the exact visual misalignment the user saw until it is
+  checked in the live client or with a screenshot.
+
+Step 4 - Duplicate Social Notifications: REVIEWED; NO CHANGE MADE.
+- The Customize panel in Tabs.lua and Social & Journal Settings in
+  SocialJournal.lua both read/write the same SC.db.socialNotifications values.
+  This is duplicate access to the same preferences.
+- Recommendation for approval: keep these controls in the Social Hub's own
+  Customize settings (where users expect Social Hub preferences) and remove
+  the duplicate notification block from Social & Journal Settings, leaving that
+  window focused on Player Journal tracking, storage limits, clear history and
+  backup/restore. This is only a recommendation; do not move/remove controls
+  until the user approves.
+
+Current progress: Steps 1-4 audited from source. No AddOn code or behavior has
+been changed. Live-client visual confirmation is still needed for Step 3 and
+for verifying the Customize panel defect after its eventual fix. The next
+implementation step requires the user's explicit approval because the user
+previously instructed not to write code yet.
