@@ -380,3 +380,20 @@ therefore remains unexplained by the current source and needs visual/runtime
 identification before changing code. Do not mark this fixed until the live behavior
 is reproduced and verified.
 Status: ACCEPTED; source-path audit complete; runtime discrepancy unresolved.
+
+
+[2026-11-27 UPDATE] Whisper single-window behavior corrected in source.
+- Changed Whisper routing so selecting a person always targets ChatFrame1's existing
+  edit box instead of ChatFrameUtil's modern IM chooser, which can select/create a
+  per-contact conversation window.
+- When the Whisper edit box needs activation, SmartChat now activates that existing
+  main-frame edit box rather than using the generic IM OpenChat path.
+- Reparented the left contact list to the main chat frame and anchored it directly
+  beside the resized message area. It is now part of the main chat-frame hierarchy,
+  not a separate UIParent-level window.
+- Clicking a contact still only selects that person's filter in the one built-in
+  Whisper tab. No per-player SmartChat tabs or chat frames are created.
+- GitHub commit: 6e68b5cce6a26703f5b3b2fb946b84ab50e83df3.
+Status: IMPLEMENTED IN SOURCE; static checks pass. Must still be tested in the live
+WoW: Forever client to confirm the client no longer opens its own IM popout and that
+the contact pane remains visually aligned with the main chat frame.
