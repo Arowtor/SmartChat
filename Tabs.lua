@@ -373,6 +373,14 @@ end
 -- than DEFAULT_CHAT_FRAME.editBox. Routing only the default edit box makes
 -- tab selection appear to work while the actual input still sends as SAY.
 local function GetRouteEditBox()
+    -- Whisper conversations must stay in the single main chat frame.
+    -- The modern IM chooser can return a per-contact conversation window,
+    -- which would open a separate chat window every time a name is selected.
+    if SC.active == "whisper" then
+        local mainFrame = ChatFrame1 or DEFAULT_CHAT_FRAME
+        local mainEditBox = mainFrame and mainFrame.editBox
+        if mainEditBox then return mainEditBox end
+    end
     if ChatFrameUtil and ChatFrameUtil.ChooseBoxForSend then
         local ok, eb = pcall(ChatFrameUtil.ChooseBoxForSend)
         if ok and eb then return eb end
@@ -392,7 +400,19 @@ local function OpenBox()
     if not eb then return end
     local frame = eb.chatFrame or DEFAULT_CHAT_FRAME
     if not eb:IsShown() then
-        eb = SC.OpenChat("", frame) or eb
+        if SC.active == "whisper" then
+            -- Activate the existing main-frame edit box; never ask the IM
+            -- subsystem to create/select a per-player conversation window.
+            if ChatEdit_ActivateChat then
+                pcall(ChatEdit_ActivateChat, eb)
+            elseif ChatFrame_OpenChat then
+                pcall(ChatFrame_OpenChat, "", ChatFrame1 or DEFAULT_CHAT_FRAME)
+            else
+                eb:Show()
+            end
+        else
+            eb = SC.OpenChat("", frame) or eb
+        end
     end
     local ok, why = Apply(eb)
     if not ok then
@@ -856,8 +876,16 @@ end
 local function PositionWhisperContactPane()
     if not whisperContactPane or not whisperLayout or not whisperLayout.active then return end
     local layout = whisperLayout
+    local chat = layout.chat
+    if chat and whisperContactPane:GetParent() ~= chat then
+        whisperContactPane:SetParent(chat)
+        whisperContactPane:SetFrameStrata(chat:GetFrameStrata())
+        whisperContactPane:SetFrameLevel(chat:GetFrameLevel() + 3)
+    end
     whisperContactPane:ClearAllPoints()
-    whisperContactPane:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", layout.left, layout.bottom)
+    -- This is a child of the main chat frame, extending into the space
+    -- reserved beside the message area. It is not a separate top-level window.
+    whisperContactPane:SetPoint("BOTTOMRIGHT", chat, "BOTTOMLEFT", -WHISPER_PANE_GAP, 0)
     whisperContactPane:SetSize(layout.sideWidth, layout.height)
 
     if whisperContactScroll then
@@ -960,9 +988,10 @@ end
 
 local function CreateWhisperContactPane()
     if whisperContactPane then return end
-    whisperContactPane = CreateFrame("Frame", "SmartChatWhisperContacts", UIParent)
-    whisperContactPane:SetFrameStrata("MEDIUM")
-    whisperContactPane:SetFrameLevel((GetMainChatFrame() and GetMainChatFrame():GetFrameLevel() or 1) + 3)
+    local mainChat = GetMainChatFrame()
+    whisperContactPane = CreateFrame("Frame", "SmartChatWhisperContacts", mainChat or UIParent)
+    whisperContactPane:SetFrameStrata(mainChat and mainChat:GetFrameStrata() or "MEDIUM")
+    whisperContactPane:SetFrameLevel((mainChat and mainChat:GetFrameLevel() or 1) + 3)
 
     whisperContactPane.bg = whisperContactPane:CreateTexture(nil, "BACKGROUND")
     whisperContactPane.bg:SetAllPoints()
