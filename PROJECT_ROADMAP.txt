@@ -387,13 +387,14 @@ Status: ACCEPTED; source-path audit complete; runtime discrepancy unresolved.
   edit box instead of ChatFrameUtil's modern IM chooser, which can select/create a
   per-contact conversation window.
 - When the Whisper edit box needs activation, SmartChat now activates that existing
-  main-frame edit box rather than using the generic IM OpenChat path.
+  main-frame edit box (or shows that same edit box as fallback); the generic IM/OpenChat
+  chooser is never used for Whisper.
 - Reparented the left contact list to the main chat frame and anchored it directly
   beside the resized message area. It is now part of the main chat-frame hierarchy,
   not a separate UIParent-level window.
 - Clicking a contact still only selects that person's filter in the one built-in
   Whisper tab. No per-player SmartChat tabs or chat frames are created.
-- GitHub commit: 6e68b5cce6a26703f5b3b2fb946b84ab50e83df3.
+- GitHub commits: 6e68b5cce6a26703f5b3b2fb946b84ab50e83df3 and d3ac625f9113bfb2c6e9134d89157a1aef31a50f3.
 Status: IMPLEMENTED IN SOURCE; static checks pass. Must still be tested in the live
 WoW: Forever client to confirm the client no longer opens its own IM popout and that
 the contact pane remains visually aligned with the main chat frame.
