@@ -405,9 +405,9 @@ local function OpenBox()
             -- subsystem to create/select a per-player conversation window.
             if ChatEdit_ActivateChat then
                 pcall(ChatEdit_ActivateChat, eb)
-            elseif ChatFrame_OpenChat then
-                pcall(ChatFrame_OpenChat, "", ChatFrame1 or DEFAULT_CHAT_FRAME)
             else
+                -- Directly show this existing edit box as a final fallback;
+                -- do not call the game's generic OpenChat/IM window chooser.
                 eb:Show()
             end
         else
