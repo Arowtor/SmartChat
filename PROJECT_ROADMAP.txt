@@ -362,3 +362,21 @@ CURRENT EXECUTION STATE
 
 Do not claim live-client verification based on source inspection. Continue to
 leave the Social Hub main interface untouched while the user is testing it.
+
+
+[2026-11-27] User clarification/request: Whisper conversations must remain fully inside
+one main Whisper tab. The list of players who have whispered the user appears on the
+left; clicking a name must only change the selected conversation displayed in the
+normal main chat area on the right. It must never open a separate chat window or a
+new per-player chat tab. This is a core SmartChat design requirement, not an optional
+external chat-window feature.
+
+Investigation note (2026-11-27): the current main-branch source already implements
+this intended flow in Tabs.lua: the contact row calls SelectWhisperContact(), which
+updates the single Whisper tab's whisperWith filter and calls SetActive("whisper",
+false). The call explicitly avoids opening the game's edit box; no new per-contact
+chat frame is created by that click handler. The actual user-observed extra window
+therefore remains unexplained by the current source and needs visual/runtime
+identification before changing code. Do not mark this fixed until the live behavior
+is reproduced and verified.
+Status: ACCEPTED; source-path audit complete; runtime discrepancy unresolved.
